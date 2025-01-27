@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\Auth\AdminController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\MechanicController;
+use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('mechanic')->middleware('guest:mechanic')->group(function () {
@@ -103,3 +105,15 @@ Route::put('/mechanic/service/{service}', [ServiceController::class, 'update'])-
     Route::put('/mechanic/products/{product}', [ProductController::class, 'update'])->name('mechanic.update');
 
     Route::get('/mechanic/order', [OrderController::class, 'shworder'])->name('mechanic.order');
+
+    //Route::get('/mechanic/dashboard', [MechanicController::class, 'index'])->name('mechanic.dashboard');
+
+
+    Route::get('/mechanic/bookings', [BookingController::class, 'show'])->name('mechanic.booking.show');   // List all bookings
+Route::get('/mechanic/bookings/create', [BookingController::class, 'create'])->name('mechanic.booking.create'); // Show form to create a booking
+Route::post('/mechanic/bookings', [BookingController::class, 'store'])->name('mechanic.booking.store');   // Store new booking
+Route::delete('/mechanic/bookings/{booking}', [BookingController::class, 'destroy'])->name('mechanic.booking.destroy'); // Delete booking
+Route::get('/mechanic/bookings/{booking}/edit', [BookingController::class, 'edit'])->name('mechanic.booking.edit'); // Show form to edit a booking
+Route::put('/mechanic/bookings/{booking}', [BookingController::class, 'update'])->name('mechanic.booking.update'); // Update booking
+
+    

@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bookings', function (Blueprint $table) {
-            $table->id('BID');
-            //$table->foreignId('OwnerID')->constrained('users');
-            //$table->foreignId('ShopID')->constrained('mechanics');
-            //$table->dateTime('DateTime');
+            $table->id();
+            $table->string('customer_name');
+            $table->string('service');
+            $table->date('booking_date');
+            $table->time('booking_time');
+            $table->string('status')->default('pending'); // e.g., pending, confirmed, completed
             $table->timestamps();
         });
     }

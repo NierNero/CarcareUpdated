@@ -2,189 +2,320 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Carcare - Online Service Provider for your Car Needs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carcare - Online Service Provider for your Car Needs</title>
     <link rel="shortcut icon" href="{{ asset('assets/img/favicon.png') }}">
-    
-    <!-- Add some basic CSS styling -->
     <style>
-        /* Basic reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* Button Styling */
+    .view-btn, .edit-btn, .delete-btn {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        text-decoration: none;
+        cursor: pointer;
+        color: white;
+        display: inline-block;
+        margin-right: 5px;
+        transition: all 0.3s ease;
+    }
 
+    .view-btn {
+        background-color: #2196f3; /* Blue */
+    }
+
+    .view-btn:hover {
+        background-color: #1976d2;
+    }
+
+    .edit-btn {
+        background-color: #ff9800; /* Orange */
+    }
+
+    .edit-btn:hover {
+        background-color: #e68900;
+    }
+
+    .delete-btn {
+        background-color: #f44336; /* Red */
+        border: none;
+    }
+
+    .delete-btn:hover {
+        background-color: #d32f2f;
+    }
+
+    .delete-btn:active {
+        transform: scale(0.98);
+    }
+    
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
             display: flex;
+            margin: 0;
             min-height: 100vh;
+            background-color: #f4f7fc;
         }
 
-        /* Sidebar Styles */
+        /* Sidebar styling */
         .sidebar {
             width: 250px;
             background-color: #4CAF50;
             color: white;
-            padding-top: 20px;
             position: fixed;
             height: 100%;
             left: 0;
             top: 0;
-        }
-
-        .sidebar a {
-            display: block;
-            padding: 15px;
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            transition: background-color 0.3s;
-        }
-
-        .sidebar a:hover {
-            background-color: #45a049;
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
         }
 
         .sidebar h2 {
             text-align: center;
-            margin-bottom: 30px;
             font-size: 24px;
+            margin-bottom: 30px;
         }
 
-        /* Content Styles */
-        .content {
+        .sidebar a {
+            text-decoration: none;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #45a049;
+            padding-left: 25px;
+        }
+
+        /* Sidebar toggle for small screens */
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        /* Main content */
+        .main-content {
             margin-left: 260px;
             padding: 20px;
-            flex-grow: 1;
+            flex: 1;
+            transition: margin-left 0.3s ease-in-out;
         }
 
-        /* Table Styles */
+        .main-content.collapsed {
+            margin-left: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+        }
+
+        h4 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin-bottom: 20px;
+        }
+
+        /* Filter Section */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-container input, .filter-container select {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .filter-container input:focus, .filter-container select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        /* Table Styling */
+        .table-container {
+            overflow-x: auto;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: white;
         }
 
-        /* Table Header */
-        table thead {
-            background-color: #28a745;
-            color: white;
-        }
-
-        table th {
+        th, td {
             padding: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            text-align: left;
+            text-align: center;
+            border: 1px solid #ddd;
         }
 
-        /* Table Rows */
-        table tbody tr {
-            background-color: #fff;
-            border-bottom: 1px solid #ddd;
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
         }
 
-        table tbody tr:nth-child(even) {
+        tr:nth-child(odd) {
             background-color: #f9f9f9;
         }
 
-        table td {
-            padding: 12px;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        table tbody tr:hover {
+        tr:hover {
             background-color: #f1f1f1;
         }
 
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .action-buttons a, .action-buttons button {
-            padding: 5px 10px;
+        /* Buttons */
+        .action-button {
+            padding: 8px 12px;
+            border: none;
             border-radius: 5px;
             color: white;
-            text-decoration: none;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-button.shipped {
+            background-color: #3f51b5;
+        }
+
+        .action-button.shipped:hover {
+            background-color: #303f9f;
+        }
+
+        .action-button.pending {
+            background-color: #ff9800;
+        }
+
+        .action-button.pending:hover {
+            background-color: #e68900;
+        }
+
+        .action-button[disabled] {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Order status badges */
+        .order-status {
+            padding: 5px 10px;
+            border-radius: 4px;
             font-size: 14px;
-            text-align: center;
+            text-transform: capitalize;
+            font-weight: bold;
         }
 
-        .view-btn {
-            background-color: #007bff;
+        .order-status.pending {
+            background-color: #ffeb3b;
+            color: #856404;
         }
 
-        .edit-btn {
-            background-color: #ffc107;
-        }
-
-        .delete-btn {
-            background-color: #dc3545;
-        }
-
-        .view-btn:hover {
-            background-color: #0056b3;
-        }
-
-        .edit-btn:hover {
-            background-color: #e0a800;
-        }
-
-        .delete-btn:hover {
-            background-color: #c82333;
-        }
-
-        .add-service-btn {
-            background-color: #28a745;
+        .order-status.completed {
+            background-color: #4caf50;
             color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 14px;
         }
 
-        .add-service-btn:hover {
-            background-color: #218838;
+        .order-status.processing {
+            background-color: #2196f3;
+            color: white;
         }
 
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+                padding-top: 10px;
+            }
+
+            .sidebar h2 {
+                font-size: 20px;
+            }
+
+            .sidebar a {
+                font-size: 16px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            table th, table td {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            h4 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                display: none;
+            }
+
+            .table-container table {
+                font-size: 12px;
+            }
+
+            .filter-container input, .filter-container select {
+                flex: none;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
-
     <!-- Sidebar -->
     <div class="sidebar">
-    @foreach ($services as $service)
-        <h2>{{ $service->name }}</h2>
+        <h2>Carcare Services</h2>
         <a href="{{ route('mechanic.dashboard') }}">Service</a>
         <a href="{{ route('mechanic.productdashboard') }}">Product</a>
         <a href="{{ route('mechanic.order') }}">Orders</a>
+        <a href="{{ route('mechanic.booking.show') }}">Booking</a>
         <a href="{{ route('profile.edit') }}">Profile</a>
         <a href="{{ route('mechanic.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log Out</a>
-
-        <!-- Logout form -->
         <form id="logout-form" action="{{ route('mechanic.logout') }}" method="POST" style="display: none;">
             @csrf
         </form>
-        @endforeach
     </div>
 
     <!-- Main Content -->
-    <div class="content">
-        <!-- Service Section -->
-        <section>
-            <div class="text-center">
-                <h2>Services</h2>
+    <div class="main-content">
+        <div class="container">
+            <h4>Service List</h4>
+            <hr />
+            <div style="margin: 10px 0; text-align: right;">
+                <a href="{{ route('mechanic.service.add') }}" class="add-service-btn" style="padding: 10px 15px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Add Service</a>
             </div>
-            <div style="margin-top: 10px; margin-bottom: 20px; text-align: right;">
-                <a href="{{ route('mechanic.service.add') }}" class="add-service-btn">Add Service</a>
+
+            <div class="filter-container">
+                <input type="text" placeholder="Search by Services" />
+                <select>
+                    <option value="">All Statuses</option>
+                    <option value="Price">Price</option>
+                    <option value="Description">Description</option>
+                    <option value="Service Name">Service Name</option>
+                </select>
             </div>
 
             <div class="container">
@@ -202,7 +333,7 @@
                             <tr>
                                 <td>{{ $service->name }}</td>
                                 <td>{{ $service->description }}</td>
-                                <td>{{ $service->price }}</td>
+                                <td>${{ number_format($service->price, 2) }}</td>
                                 <td class="action-buttons">
                                     <a href="{{ route('mechanic.shows', $service) }}" class="view-btn">View</a>
                                     <a href="{{ route('mechanic.edit', $service) }}" class="edit-btn">Edit</a>
@@ -217,8 +348,7 @@
                     </tbody>
                 </table>
             </div>
-        </section>
+        </div>
     </div>
-
 </body>
 </html>

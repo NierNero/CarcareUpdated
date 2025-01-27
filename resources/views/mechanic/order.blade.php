@@ -6,10 +6,10 @@
     <title>Product & Order Management</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             display: flex;
-            min-height: 100vh;
             margin: 0;
+            min-height: 100vh;
             background-color: #f4f7fc;
         }
 
@@ -18,112 +18,236 @@
             width: 250px;
             background-color: #4CAF50;
             color: white;
-            padding-top: 20px;
             position: fixed;
             height: 100%;
             left: 0;
             top: 0;
-        }
-
-        .sidebar a {
-            display: block;
-            padding: 15px;
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            transition: background-color 0.3s;
-        }
-
-        .sidebar a:hover {
-            background-color: #45a049;
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
         }
 
         .sidebar h2 {
             text-align: center;
-            margin-bottom: 30px;
             font-size: 24px;
+            margin-bottom: 30px;
         }
 
-        /* Main content area */
+        .sidebar a {
+            text-decoration: none;
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #45a049;
+            padding-left: 25px;
+        }
+
+        /* Sidebar toggle for small screens */
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+
+        /* Main content */
         .main-content {
             margin-left: 260px;
             padding: 20px;
-            width: 100%;
+            flex: 1;
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        .main-content.collapsed {
+            margin-left: 0;
         }
 
         .container {
-            width: 80%;
-            margin: 30px auto;
             background-color: white;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
         }
 
-        .product-details p {
+        h4 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin-bottom: 20px;
+        }
+
+        /* Filter Section */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-container input, .filter-container select {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
             font-size: 16px;
-            margin: 10px 0;
         }
 
-        .product-details strong {
-            color: #4CAF50;
+        .filter-container input:focus, .filter-container select:focus {
+            outline: none;
+            border-color: #4CAF50;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 12px 20px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-            font-size: 16px;
+        /* Table Styling */
+        .table-container {
+            overflow-x: auto;
         }
 
-        .btn:hover {
-            background-color: #45a049;
-        }
-
-        .order-management {
-            margin-top: 30px;
-        }
-
-        .order-table {
+        table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            background-color: white;
         }
 
-        .order-table th, .order-table td {
+        th, td {
             padding: 12px;
             text-align: center;
             border: 1px solid #ddd;
         }
 
-        .order-table th {
+        th {
             background-color: #4CAF50;
             color: white;
+            font-size: 16px;
         }
 
+        tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Buttons */
+        .action-button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .action-button.shipped {
+            background-color: #3f51b5;
+        }
+
+        .action-button.shipped:hover {
+            background-color: #303f9f;
+        }
+
+        .action-button.pending {
+            background-color: #ff9800;
+        }
+
+        .action-button.pending:hover {
+            background-color: #e68900;
+        }
+
+        .action-button[disabled] {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Order status badges */
         .order-status {
             padding: 5px 10px;
             border-radius: 4px;
+            font-size: 14px;
             text-transform: capitalize;
+            font-weight: bold;
         }
 
-        .pending { background-color: #f8d7da; color: #721c24; }
-        .completed { background-color: #d4edda; color: #155724; }
-        .processing { background-color: #fff3cd; color: #856404; }
+        .order-status.pending {
+            background-color: #ffeb3b;
+            color: #856404;
+        }
+
+        .order-status.completed {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .order-status.processing {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+                padding-top: 10px;
+            }
+
+            .sidebar h2 {
+                font-size: 20px;
+            }
+
+            .sidebar a {
+                font-size: 16px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            table th, table td {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            h4 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                display: none;
+            }
+
+            .table-container table {
+                font-size: 12px;
+            }
+
+            .filter-container input, .filter-container select {
+                flex: none;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
-
     <!-- Sidebar -->
     <div class="sidebar">
         <h2>Shop Dashboard</h2>
         <a href="{{ route('mechanic.dashboard') }}">Service</a>
         <a href="{{ route('mechanic.productdashboard') }}">Product</a>
         <a href="{{ route('mechanic.order') }}">Orders</a>
+        <a href="{{ route('mechanic.booking.show') }}">Booking</a>
         <a href="{{ route('profile.edit') }}">Profile</a>
         <a href="{{ route('mechanic.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log Out</a>
         <!-- Logout form -->
@@ -134,51 +258,69 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <h1>Product & Order Management</h1>
-
         <div class="container">
-            <!-- Product Details -->
-            <div class="product-details">
-                <p><strong>Product Name:</strong> Example Product</p>
-                <p><strong>Description:</strong> This is an example description of the product.</p>
-                <p><strong>Price:</strong> $100.00</p>
-                <p><strong>Inventory:</strong> 50</p>
+            <h4>Order List</h4>
+            <hr />
 
-                <!-- Action Buttons -->
-                <a href="#" class="btn">Add to Cart</a>
-                <a href="#" class="btn">View Orders</a>
+            <!-- Filter Section -->
+            <div class="filter-container">
+                <input type="text" placeholder="Search by Customer or Product" />
+                <select>
+                    <option value="">All Statuses</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Delivered">Delivered</option>
+                </select>
             </div>
 
-            <!-- Order Management -->
-            <div class="order-management">
-                <h2>Order Management</h2>
-                <table class="order-table">
+            <!-- Table -->
+            <div class="table-container">
+                <table>
                     <thead>
                         <tr>
                             <th>Order ID</th>
-                            <th>Customer Name</th>
+                            <th>Customer</th>
+                            <th>Product</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <th>Date</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>001</td>
-                            <td>John Doe</td>
-                            <td><span class="order-status pending">Pending</span></td>
-                            <td><a href="#" class="btn">Mark as Completed</a></td>
+                            <td>1</td>
+                            <td>Ryan Jay Suazo</td>
+                            <td>Belt Haha</td>
+                            <td><span class="order-status shipped">Shipped</span></td>
+                            <td>2023-09-20</td>
+                            <td>
+                                <button class="action-button shipped">Delivered</button>
+                            </td>
                         </tr>
                         <tr>
-                            <td>002</td>
-                            <td>Jane Smith</td>
-                            <td><span class="order-status completed">Completed</span></td>
-                            <td><a href="#" class="btn">Mark as Pending</a></td>
+                            <td>2</td>
+                            <td>James Mijares</td>
+                            <td>Tire</td>
+                            <td><span class="order-status pending">Pending</span></td>
+                            <td>2023-09-21</td>
+                            <td>
+                                <button class="action-button pending">Ship Order</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Luisse Crispe</td>
+                            <td>Oil Filter</td>
+                            <td><span class="order-status completed">Delivered</span></td>
+                            <td>2023-09-18</td>
+                            <td>
+                                <button class="action-button shipped" disabled>Delivered</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
 </body>
 </html>

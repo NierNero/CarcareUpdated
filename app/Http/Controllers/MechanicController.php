@@ -11,7 +11,7 @@ class MechanicController extends Controller
     public function index()
     {
         $mechanics = Mechanic::all(); // Fetch all mechanics
-        return view('mechanics.index', compact('mechanics'));
+        return view('mechanic.dashboard', compact('mechanics'));
     }
     public function store(Request $request)
     {

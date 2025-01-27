@@ -148,7 +148,7 @@
                                 style="padding-right: 5px;padding-left: 5px;">
                                 
                                     <div class="img-hover">
-                                        <img src="{{ ('images/services/thumbnails/thumbnail.jpg') }}" alt="AC Dry Servicing"
+                                        <img src="{{ ('images/mechanic.jpg') }}" alt="AC Dry Servicing"
                                             class="img-responsive">
                                     </div>
                                     <div class="info-gallery">

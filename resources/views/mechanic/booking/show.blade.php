@@ -1,57 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Carcare - Online Service Provider for your Car Needs</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{ asset('assets/img/favicon.png') }}">
-    
+    <title>Mechanic Booking Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Arial&display=swap" rel="stylesheet">
     <style>
 
-        /* Button Styling */
-    .view-btn, .edit-btn, .delete-btn {
-        padding: 8px 12px;
-        border: none;
-        border-radius: 5px;
-        font-size: 14px;
-        text-decoration: none;
-        cursor: pointer;
-        color: white;
-        display: inline-block;
-        margin-right: 5px;
-        transition: all 0.3s ease;
-    }
-
-    .view-btn {
-        background-color: #2196f3; /* Blue */
-    }
-
-    .view-btn:hover {
-        background-color: #1976d2;
-    }
-
-    .edit-btn {
-        background-color: #ff9800; /* Orange */
-    }
-
-    .edit-btn:hover {
-        background-color: #e68900;
-    }
-
-    .delete-btn {
-        background-color: #f44336; /* Red */
-        border: none;
-    }
-
-    .delete-btn:hover {
-        background-color: #d32f2f;
-    }
-
-    .delete-btn:active {
-        transform: scale(0.98);
-    }
-    
-        body {
+body {
             font-family: 'Arial', sans-serif;
             display: flex;
             margin: 0;
@@ -289,62 +245,55 @@
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <h2>Dashboard</h2>
+        <h2>Shop Dashboard</h2>
         <a href="{{ route('mechanic.dashboard') }}">Service</a>
         <a href="{{ route('mechanic.productdashboard') }}">Product</a>
         <a href="{{ route('mechanic.order') }}">Orders</a>
         <a href="{{ route('mechanic.booking.show') }}">Booking</a>
         <a href="{{ route('profile.edit') }}">Profile</a>
         <a href="{{ route('mechanic.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log Out</a>
+        <!-- Logout form -->
         <form id="logout-form" action="{{ route('mechanic.logout') }}" method="POST" style="display: none;">
             @csrf
         </form>
     </div>
 
-    <!-- Main Content -->
+    <!-- Main content -->
     <div class="main-content">
         <div class="container">
-            <h2>Product List</h2>
-            <hr />
-            <div style="margin: 10px 0; text-align: right;">
-                <a href="{{ route('mechanic.create') }}" class="add-product-btn" style="padding: 10px 15px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Add Product</a>
-            </div>
+            <h1>Mechanic Booking Dashboard</h1>
+            
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
 
-            <div class="filter-container">
-                <input type="text" placeholder="Search by Product" />
-                <select>
-                    <option value="">All Statuses</option>
-                    <option value="Price">Price</option>
-                    <option value="Description">Description</option>
-                    <option value="Product Name">Product Name</option>
-                </select>
-            </div>
-
-            <div class="container">
-                <table>
+            <div class="table-container">
+                <table class="table">
                     <thead>
                         <tr>
-                            <th>Product Name</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Inventory</th>
-                            <th></th>
+                            <th>ID</th>
+                            <th>Customer Name</th>
+                            <th>Service</th>
+                            <th>Booking Date</th>
+                            <th>Booking Time</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($products as $product)
+                        @foreach($bookings as $booking)
                             <tr>
-                                <td>{{ $product->ProductName }}</td>
-                                <td>{{ $product->Description }}</td>
-                                <td>{{ $product->Price }}</td>
-                                <td>{{ $product->Inventory }}</td>
+                                <td>{{ $booking->id }}</td>
+                                <td>{{ $booking->customer_name }}</td>
+                                <td>{{ $booking->service }}</td>
+                                <td>{{ $booking->booking_date }}</td>
+                                <td>{{ $booking->booking_time }}</td>
                                 <td>
-                                    <a href="{{ route('mechanic.show', $product->id) }}" class="view-btn">View</a>
-                                    <a href="{{ route('mechanic.product.edit', $product->id) }}" class="edit-btn">Edit</a>
-                                    <form action="{{ route('mechanic.destroy', $product->id) }}" method="POST" style="display:inline;">
+                                    <a href="{{ route('bookings.show', $booking->id) }}" class="action-button shipped">View</a>
+                                    <a href="{{ route('bookings.edit', $booking->id) }}" class="action-button pending">Edit</a>
+                                    <form action="{{ route('bookings.destroy', $booking->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="delete-btn" onclick="return confirm('Are you sure?')">Delete</button>
+                                        <button class="action-button shipped" onclick="return confirm('Are you sure?')">Delete</button>
                                     </form>
                                 </td>
                             </tr>
