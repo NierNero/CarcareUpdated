@@ -9,172 +9,166 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
+            background-color: #f9f9f9;
         }
         .navbar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
             display: flex;
             justify-content: space-between;
-            padding: 1rem;
-            background-color: #fff;
-            border-bottom: 1px solid #ddd;
-
-        }
-
-        .navbars {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            background-color: #fff;
-            border-bottom: 1px solid #ddd;
-
-        }
-        .navbar a {
-            margin: 0 1rem;
-            text-decoration: none;
-            color: #000;
-        }
-        .navbar .user {
-            display: flex;
             align-items: center;
         }
-        .navbar .user span {
-            margin-left: 0.5rem;
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
         }
-        .dashboard {
-            padding: 2rem;
+        .navbar a:hover {
+            text-decoration: underline;
         }
-        .dashboard h1 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        .logout {
-            padding: 1rem;
-            background-color: #fff;
-            border: 1px solid #ddd;
+        .header {
+            background-color: #f1f1f1;
+            padding: 20px;
             text-align: center;
-            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .search-container {
+            margin: 20px auto;
+            text-align: center;
+        }
+        .search-container input {
+            width: 50%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            width: 150px;
         }
-        .navbars h3 {
-            margin-left:15px;
+        .table-container {
+            margin: 20px auto;
+            width: 90%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        .navbar .search .text {
-            margin-right: -20%
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        .container{
-            margin-top:2%;
-            
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
         }
-        
-        
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .actions button {
+            padding: 8px 12px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .actions button:hover {
+            background-color: #d32f2f;
+        }
     </style>
 </head>
 <body>
-        
-
-    <div class="navbar">      
-    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                        {{ __('Home') }}
-                     </x-nav-link>
-                    <x-nav-link :href="route('adminbooking')" :active="request()->routeIs('adminbooking')">
-                        {{ __('Booking') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('adminreport')" :active="request()->routeIs('adminreport')">
-                        {{ __('Report') }}
-                    </x-nav-link>
-                    
-    
-                </div> 
-            <div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                           
-
-                            <form method="POST" action="{{ route('admin.logout') }}">
-                    <x-responsive-nav-link :href="route('admin.logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                    @csrf
-
-                    
-                </form>
-                </div>
-    </div>
-                                         
-    </div>
-    <div class="navbars">
-            <h3 class="font-semibold text-xl text-gray-800 leading-tight">
-                    {{ __('User Accounts') }}
-                    </h3>
-        <div class="search">
-            <input type="text" placeholder="Search..">
+    <!-- Navbar -->
+    <div class="navbar">
+        <div>
+            <a href="{{ route('admin.dashboard') }}">Home</a>
+            <a href="{{ route('adminbooking') }}">Booking</a>
+            <a href="{{ route('adminreport') }}">Report</a>
         </div>
-         
+        <div>
+            <form method="POST" action="{{ route('admin.logout') }}" style="display: inline;">
+                @csrf
+                <button type="submit" style="background: none; color: white; border: none; cursor: pointer; font-weight: bold;">
+                    Log Out
+                </button>
+            </form>
+        </div>
     </div>
-    <div class="container">
-        <table class="table table-bordered" style="margin-left:15%">
+
+    <!-- Header -->
+    <div class="header">
+        <h1>Admin Dashboard - User Accounts</h1>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <input type="text" placeholder="Search users or mechanics...">
+    </div>
+
+    <!-- Table -->
+    <div class="table-container">
+        <table>
             <thead>
                 <tr>
-                    <th>ID<th></th></th>
-                    <th>Name <th></th></th>
-                    <th>ContactNo <th></th></th>
-                    <th>Address <th></th></th>
-                    <th>Email <th></th></th>
-                    <th>Created At <th></th></th>
-                    <th>Updated At <th></th></th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Contact No</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
+                <!-- Users -->
                 @foreach ($users as $user)
                     <tr>
-                        <td>{{ $user->id }} 
-
-                        <td></td></td>
-
-                        <td>{{ $user->name }} <td></td></td>
-                        <td>{{ $user->ContactNo }} <td></td></td>
-                        <td>{{ $user->Address }} <td></td></td>
-                        <td>{{ $user->email }} <td></td></td>
-                        <td>{{ $user->created_at }} <td></td></td>
-                        <td>{{ $user->updated_at }} <td></td></td>
-                        <td>
-                        <form action="{{ route('admin.destroy', $user->id) }}" method="POST" style="display:inline-block;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->ContactNo }}</td>
+                        <td>{{ $user->Address }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->created_at }}</td>
+                        <td>{{ $user->updated_at }}</td>
+                        <td class="actions">
+                            <form action="{{ route('admin.destroy', $user->id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">Delete</button>
+                            </form>
                         </td>
-                        
                     </tr>
                 @endforeach
 
+                <!-- Mechanics -->
                 @foreach ($mechanics as $mechanic)
                     <tr>
-                        <td>{{ $mechanic->id }} 
-
-                        <td></td></td>
-
-                        <td>{{ $mechanic->name }} <td></td></td>
-                        <td>{{ $mechanic->ContactNo }} <td></td></td>
-                        <td>{{ $mechanic->Address }} <td></td></td>
-                        <td>{{ $mechanic->email }} <td></td></td>
-                        <td>{{ $mechanic->created_at }} <td></td></td>
-                        <td>{{ $mechanic->updated_at }} <td></td></td>
-                        <td>
-                        <form action="{{ route('mechanic.destroy', $user->id) }}" method="POST" style="display:inline-block;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
+                        <td>{{ $mechanic->id }}</td>
+                        <td>{{ $mechanic->name }}</td>
+                        <td>{{ $mechanic->ContactNo }}</td>
+                        <td>{{ $mechanic->Address }}</td>
+                        <td>{{ $mechanic->email }}</td>
+                        <td>{{ $mechanic->created_at }}</td>
+                        <td>{{ $mechanic->updated_at }}</td>
+                        <td class="actions">
+                            <form action="{{ route('mechanic.destroy', $mechanic->id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">Delete</button>
+                            </form>
                         </td>
-                        
                     </tr>
                 @endforeach
-
-
             </tbody>
         </table>
     </div>

@@ -22,7 +22,7 @@ class AdminController extends Controller
     }
     public function destroy($id)
     {
-        $users = User::find($id);
+        $user = User::find($id);
         if ($user) {
             $user->delete();
         }
