@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class RegisteredUserController extends Controller
 {
@@ -29,22 +30,36 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // Validate the incoming request, including the image
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Add image validation
         ]);
 
+        // Handle image upload if a file is provided
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('profile_images', 'public'); // Store image in 'public/profile_images'
+        } else {
+            $imagePath = null; // Default to null if no image is uploaded
+        }
+
+        // Create the new user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'image' => $imagePath, // Save image path in the database
         ]);
 
+        // Trigger the Registered event
         event(new Registered($user));
 
+        // Log the user in
         Auth::login($user);
 
+        // Redirect to the dashboard
         return redirect(route('dashboard', absolute: false));
     }
 }

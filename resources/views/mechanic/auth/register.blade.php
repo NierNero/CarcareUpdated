@@ -11,7 +11,7 @@
 @endif
 
 <h3 class="text-center mb-3">Mechanic Register Page</h3>
-    <form method="POST" action="{{ route('mechanic.register') }}">
+<form action="{{ route('mechanic.create') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <!-- Name -->
@@ -49,7 +49,7 @@
     <!-- Shop Name -->
     <div class="mt-4">
         <x-input-label for="image" :value="__('Shop Image')" />
-        <x-text-input id="image" class="block mt-1 w-full" type="file" name="image" />
+        <x-text-input type="image" class="block mt-1 w-full" type="file" name="image" />
         <x-input-error :messages="$errors->get('image')" class="mt-2" />
     </div>
 

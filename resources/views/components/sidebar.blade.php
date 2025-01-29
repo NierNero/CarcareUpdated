@@ -1,5 +1,7 @@
+
 <div class="sidebar">
-        <h2>Shop Dashboard</h2>
+<h2>{{ auth()->guard('mechanic')->user()->image ?? 'No Image' }}</h2>
+<h2>{{ auth()->guard('mechanic')->user()->shopname }}</h2>        
         <a href="{{ route('mechanic.dashboard') }}">Service</a>
         <a href="{{ route('mechanic.productdashboard') }}">Product</a>
         <div class="dropdown">

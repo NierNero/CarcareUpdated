@@ -11,8 +11,8 @@
 @endif
 
 <h3 class="text-center mb-3">Mechanic Register Page</h3>
-    <form method="POST" action="{{ route('mechanic.register') }}">
-        @csrf
+<form action="{{ route('mechanics.store') }}" method="POST" enctype="multipart/form-data">
+@csrf
 
         <!-- Name -->
         <div>

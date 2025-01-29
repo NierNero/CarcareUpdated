@@ -106,7 +106,10 @@ Route::put('/mechanic/service/{service}', [ServiceController::class, 'update'])-
 
     Route::get('/mechanic/order', [OrderController::class, 'shworder'])->name('mechanic.order');
 
-    //Route::get('/mechanic/dashboard', [MechanicController::class, 'index'])->name('mechanic.dashboard');
+    Route::post('/mechanic/create', [MechanicController::class, 'store'])->name('mechanic.create');
+    Route::post('/mechanic/dashboard', [MechanicController::class, 'index'])->name('mechanic.dashboard');
+
+
 
 
     Route::get('/mechanic/bookings', [BookingController::class, 'show'])->name('mechanic.booking.show');   // List all bookings

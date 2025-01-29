@@ -116,7 +116,7 @@
         </section>
         
             <div class="content_info content_resalt">
-                <div class="container" style="margin-top: 40px;">
+                <div class="container" style="margin-top: 30px;">
                     <div class="row">
                     </div>
                 </div>
@@ -156,7 +156,7 @@
                         <ul class="services-lines full-services">
                             <li>
                             <div class="item-service-line">
-                                    <i class="fa"><a href="servicesbycategory/1.html"><img class="icon-img"
+                                    <i class="fa"><a href="{{ route('booknow') }}"><img class="icon-img"
                                                 src="images/mechanic.jpg" alt="Turbo" style="width: 100px; height: 100%;"></a></i>
                                     <h5>Turbo</h5>
                                 </div>

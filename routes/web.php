@@ -18,6 +18,11 @@ Route::get('/dashboard', function () {
     
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/booknow', function () {
+    return view('booknow');
+    
+})->middleware(['auth', 'verified'])->name('booknow');
+
 
 Route::get('/booking', function () {
     return view('booking');
@@ -35,6 +40,8 @@ Route::get('/services', function () {
 Route::get('/usershop', function () {
     return view('usershop');
 })->middleware(['auth', 'verified'])->name('usershop');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

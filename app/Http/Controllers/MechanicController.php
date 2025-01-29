@@ -13,6 +13,12 @@ class MechanicController extends Controller
         $mechanics = Mechanic::all(); // Fetch all mechanics
         return view('mechanic.dashboard', compact('mechanics'));
     }
+
+    public function create()
+    {
+        return view('mechanic.create');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -20,23 +26,40 @@ class MechanicController extends Controller
             'email' => 'required|string|email|max:255|unique:mechanics',
             'password' => 'required|string|min:8|confirmed',
             'shopname' => 'required|string|max:255',
+            'ContactNo' => 'nullable|string|max:20',  // Added validation for ContactNo
+            'Address' => 'nullable|string|max:255',   // Added validation for Address
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-
-        $mechanic = new Mechanic();
-        $mechanic->name = $request->name;
-        $mechanic->email = $request->email;
-        $mechanic->password = Hash::make($request->password);
-        $mechanic->shopname = $request->shopname;
-
+    
+        $imagePath = null; // Default if no image is uploaded
+    
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
-            $mechanic->image = $imagePath;
+            $imageName = time().'.'.$request->image->extension();  
+            $customPath = public_path('upload/mechanic');
+    
+            // Ensure the directory exists
+            if (!file_exists($customPath)) {
+                mkdir($customPath, 0777, true);
+            }
+    
+            // Move the uploaded file
+            $request->image->move($customPath, $imageName);
+    
+            // Store relative path in DB
+            $imagePath = 'upload/mechanic/' . $imageName;
         }
-
-        $mechanic->save();
-
-        return redirect()->route('mechanic.dashboard');
+    
+        // Create the Mechanic record
+        $mechanic = Mechanic::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'shopname' => $request->shopname,
+            'image' => $imagePath,
+            'ContactNo' => $request->ContactNo,  // Save ContactNo
+            'Address' => $request->Address,      // Save Address
+        ]);
+    
+        return redirect()->route('mechanic.dashboard')->with('success', 'Mechanic added successfully!');
     }
 }
-
