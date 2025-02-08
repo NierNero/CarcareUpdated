@@ -17,7 +17,7 @@
             <h2>Product List</h2>
             <hr />
             <div style="margin: 10px 0; text-align: right;">
-                <a href="{{ route('mechanic.create') }}" class="add-product-btn" style="padding: 10px 15px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Add Product</a>
+                <a href="{{ route('mechanic.created') }}" class="add-product-btn" style="padding: 10px 15px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">Add Product</a>
             </div>
 
             <div class="filter-container">

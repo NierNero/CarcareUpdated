@@ -18,5 +18,12 @@ class Product extends Authenticatable
         'Description',
         'Price',
         'Inventory',
+        'mechanic_id', // Add mechanic_id to the fillable array
     ];
+
+     // A product belongs to a user
+     public function user()
+     {
+        return $this->belongsTo(Mechanic::class);
+     }
 }

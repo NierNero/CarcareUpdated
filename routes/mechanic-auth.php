@@ -97,7 +97,7 @@ Route::put('/mechanic/service/{service}', [ServiceController::class, 'update'])-
     //for Product Mechanic Product
 
     Route::get('/mechanic/productdashboard', [ProductController::class, 'showprod'])->name('mechanic.productdashboard');
-    Route::get('/mechanic/products/create', [ProductController::class, 'create'])->name('mechanic.create');
+    Route::get('/mechanic/products/created', [ProductController::class, 'created'])->name('mechanic.created');
     Route::post('/mechanic/products', [ProductController::class, 'store'])->name('mechanic.store');
     Route::get('/mechanic/products/{product}', [ProductController::class, 'show'])->name('mechanic.show');
     Route::delete('/mechanic/products/{product}', [ProductController::class, 'destroy'])->name('mechanic.destroy');

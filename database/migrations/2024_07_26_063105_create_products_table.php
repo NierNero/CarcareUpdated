@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('Description');
             $table->decimal('Price', 8, 2);
             $table->integer('Inventory');
+            $table->foreignId('mechanic_id')->nullable()->constrained('mechanics')->onDelete('cascade'); // Add foreign key
             $table->timestamps();
         });
     }

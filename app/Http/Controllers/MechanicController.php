@@ -16,7 +16,7 @@ class MechanicController extends Controller
 
     public function create()
     {
-        return view('mechanic.create');
+        return view('mechanic.creates');
     }
 
     public function store(Request $request)

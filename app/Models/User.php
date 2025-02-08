@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Mechanic::class);
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
