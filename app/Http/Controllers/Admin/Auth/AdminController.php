@@ -28,12 +28,6 @@ class AdminController extends Controller
 
         $mechanic = Mechanic::find($id);
         if ($mechanic) {
-            if ($mechanic->image) {
-                $imagePath = public_path('upload/mechanic/' . $mechanic->image);
-                if (File::exists($imagePath)) {
-                    File::delete($imagePath);
-                }
-            }
             $mechanic->delete();
             return redirect()->route('admin.dashboard')->with('success', 'Mechanic deleted successfully.');
         }
