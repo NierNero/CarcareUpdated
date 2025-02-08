@@ -126,51 +126,72 @@
                     <th>Email</th>
                     <th>Created At</th>
                     <th>Updated At</th>
-                    <th>Actions</th>
+                    <th>Image</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Users -->
-                @foreach ($users as $user)
-                    <tr>
-                        <td>{{ $user->id }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->ContactNo }}</td>
-                        <td>{{ $user->Address }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->created_at }}</td>
-                        <td>{{ $user->updated_at }}</td>
-                        <td class="actions">
-                            <form action="{{ route('admin.destroy', $user->id) }}" method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
+    <!-- Users -->
+    @foreach ($users as $user)
+        <tr onclick="redirectToView('{{ route('admin.user.view', $user->id) }}')">
+            <td>{{ $user->id }}</td>
+            <td>{{ $user->name }}</td>
+            <td>{{ $user->ContactNo }}</td>
+            <td>{{ $user->Address }}</td>
+            <td>{{ $user->email }}</td>
+            <td>{{ $user->created_at }}</td>
+            <td>{{ $user->updated_at }}</td>
+            <td>
+                @if($user->image)
+                    <img src="{{ asset('upload/users/' . $user->image) }}" alt="User Image" width="50">
+                @else
+                    No Image
+                @endif
+            </td>
+            <td class="actions">
+                <form action="{{ route('admin.destroy', $user->id) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
 
-                <!-- Mechanics -->
-                @foreach ($mechanics as $mechanic)
-                    <tr>
-                        <td>{{ $mechanic->id }}</td>
-                        <td>{{ $mechanic->name }}</td>
-                        <td>{{ $mechanic->ContactNo }}</td>
-                        <td>{{ $mechanic->Address }}</td>
-                        <td>{{ $mechanic->email }}</td>
-                        <td>{{ $mechanic->created_at }}</td>
-                        <td>{{ $mechanic->updated_at }}</td>
-                        <td class="actions">
-                            <form action="{{ route('mechanic.destroy', $mechanic->id) }}" method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
+    <!-- Mechanics -->
+    @foreach ($mechanics as $mechanic)
+        <tr onclick="redirectToView('{{ route('admin.mechanic.view', $mechanic->id) }}')">
+            <td>{{ $mechanic->id }}</td>
+            <td>{{ $mechanic->name }}</td>
+            <td>{{ $mechanic->ContactNo }}</td>
+            <td>{{ $mechanic->Address }}</td>
+            <td>{{ $mechanic->email }}</td>
+            <td>{{ $mechanic->created_at }}</td>
+            <td>{{ $mechanic->updated_at }}</td>
+            <td>
+                @if($mechanic->image)
+                    <img src="{{ asset('upload/mechanic/' . $mechanic->image) }}" alt="Mechanic Image" width="80">
+                @else
+                    No Image
+                @endif
+            </td>
+            <!--<td class="actions">
+                <form action="{{ route('mechanic.destroy', $mechanic->id) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Delete</button>
+                </form>
+            </td>-->
+        </tr>
+    @endforeach
+</tbody>
+
         </table>
     </div>
+    <script>
+    function redirectToView(url) {
+        window.location.href = url;
+    }
+</script>
+
 </body>
 </html>

@@ -29,37 +29,30 @@ class RegisteredUserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
-    {
-        // Validate the incoming request, including the image
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'], // Add image validation
-        ]);
+{
+    // Validate the request
+    $request->validate([
+        'first_name' => ['required', 'string', 'max:255'],
+        'last_name' => ['required', 'string', 'max:255'], // Added last_name validation
+        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
+        'password' => ['required', 'confirmed', Rules\Password::defaults()],
+    ]);
 
-        // Handle image upload if a file is provided
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('profile_images', 'public'); // Store image in 'public/profile_images'
-        } else {
-            $imagePath = null; // Default to null if no image is uploaded
-        }
+    // Handle image upload
+    $imagePath = $request->hasFile('image') ? $request->file('image')->store('profile_images', 'public') : null;
 
-        // Create the new user
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'image' => $imagePath, // Save image path in the database
-        ]);
+    // Create user
+    $user = User::create([
+        'first_name' => $request->first_name, // Corrected field
+        'last_name' => $request->last_name,   // Added last_name
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+    ]);
 
-        // Trigger the Registered event
-        event(new Registered($user));
+    event(new Registered($user));
 
-        // Log the user in
-        Auth::login($user);
+    Auth::login($user);
 
-        // Redirect to the dashboard
-        return redirect(route('dashboard', absolute: false));
-    }
+    return redirect(route('dashboard', absolute: false));
+}
 }

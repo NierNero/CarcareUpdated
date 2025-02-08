@@ -77,7 +77,8 @@ Route::get('/admin/adminreport', function () {
 Route::get('/admin/dashboard', [AdminController::class, 'showUsers'])->name('admin.dashboard');
 Route::delete('/admin/{user}', [AdminController::class, 'destroy'])->name('admin.destroy');
 
-
+Route::get('/admin/user/view/{id}', [AdminController::class, 'viewUser'])->name('admin.user.view');
+Route::get('/admin/mechanic/view/{id}', [AdminController::class, 'viewMechanic'])->name('admin.mechanic.view');
 
 
 
