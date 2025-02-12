@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>Carcare - Online Service Provider for your Car Needs</title>
@@ -13,12 +14,13 @@
     <link href="{{ asset('assets/css/theme-responsive.css') }}" rel="stylesheet" media="screen">
     <link href="{{ asset('assets/css/dtb/jquery.dataTables.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet" media="screen">        
+    <link href="{{ asset('assets/css/toastr.min.css') }}" rel="stylesheet" media="screen">
     <script type="text/javascript" src="{{ asset('assets/js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/jquery-ui.1.10.4.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/toastr.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/modernizr.js') }}"></script>
 </head>
+
 <body>
     <div id="layout">
         <div class="info-head">
@@ -40,7 +42,8 @@
                     <div class="col-md-6">
                         <ul class="visible-md visible-lg text-right">
                             <li><i class="fa fa-comment"></i> Live Chat</li>
-                            <li><a href="index.php/changelocation.html"><i class="fa fa-map-marker"></i> University of High Blood</a></li>
+                            <li><a href="index.php/changelocation.html"><i class="fa fa-map-marker"></i> University of
+                                    High Blood</a></li>
                         </ul>
                     </div>
                 </div>
@@ -68,29 +71,29 @@
                     <li> <a href="{{ route('usershop') }}">Shop</a>
                     </li>
 
-                    </li>    
+                    </li>
                     <li> <a href="{{ Auth::user()->name }}">My Account</a>
-                            <ul class="drop-down one-column hover-fade">
-                                <li><a href="{{ route('profile.edit') }}">Profile</a></li>
-                                <li><form method="POST" action="{{ route('logout') }}">
-                    <a href="route('logout')"
-                            onclick="event.preventDefault();
+                        <ul class="drop-down one-column hover-fade">
+                            <li><a href="{{ route('profile.edit') }}">Profile</a></li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    <a href="route('logout')" onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                        </a>
-                    @csrf
+                                        {{ __('Log Out') }}
+                                    </a>
+                                    @csrf
+                            </li>
+                        </ul>
+
+
+
                     </li>
-                            </ul>
 
-                    
-                            
-                    </li>
 
-                    
 
-                
-                    
-                    
+
+
+
                     <!--<li class="login-form"> <a href="index.php/register.html" title="Register">Register</a></li>
                     <li class="login-form"> <a href="login.html" title="Login">Login</a></li>
                     <li class="search-bar">
@@ -99,14 +102,14 @@
             </nav>
         </header>
         <section class="tp-banner-container">
-            
+
             <div class="filter-title">
                 <div class="title-header">
                     <h2 style="color:#fff;">BOOK A SERVICE</h2>
                     <p class="lead">Book a service at very affordable price, </p>
                 </div>
                 <div class="filter-header">
-                    <form id="sform" action="searchservices" method="post">                        
+                    <form id="sform" action="searchservices" method="post">
                         <input type="text" id="q" name="q" required="required" placeholder="What Services do you want?"
                             class="input-large typeahead" autocomplete="off">
                         <input type="submit" name="submit" value="Search">
@@ -114,18 +117,18 @@
                 </div>
             </div>
         </section>
-        
-            <div class="content_info content_resalt">
-                <div class="container" style="margin-top: 30px;">
-                    <div class="row">
-                    </div>
+
+        <div class="content_info content_resalt">
+            <div class="container" style="margin-top: 30px;">
+                <div class="row">
                 </div>
-                
             </div>
-            <div class="semiboxshadow text-center">
-                <img src="{{ ('assets/img/img-theme/shp.png') }}" class="img-responsive" alt="">
-            </div>
-            <div class="section-title-01 honmob">
+
+        </div>
+        <div class="semiboxshadow text-center">
+            <img src="{{ ('assets/img/img-theme/shp.png') }}" class="img-responsive" alt="">
+        </div>
+        <div class="section-title-01 honmob">
             <div class="bg_parallax image_01_parallax"></div>
             <div class="opacy_bg_02">
                 <div class="container">
@@ -153,26 +156,29 @@
             <div class="content_info" style="margin-top: -70px;">
                 <div class="row">
                     <div class="col-md-12">
-                        <ul class="services-lines full-services">
-                            <li>
-                            <div class="item-service-line">
-                                    <i class="fa"><a href="{{ route('booknow') }}"><img class="icon-img"
-                                                src="images/mechanic.jpg" alt="Turbo" style="width: 100px; height: 100%;"></a></i>
-                                    <h5>Turbo</h5>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="content_info content_resalt">
-                <div class="container">
-                    <div class="row">
-                        <div class="titles">
+                        <div class="row">
+                            @if($mechanic->services->isEmpty())
+                                <p class="text-center text-muted">No services found.</p>
+                            @else
+                                @foreach($mechanic->services as $service)
+                                    <div class="col-md-4">
+                                        <div class="card shadow-sm mb-4">
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title">{{ $service->name }}</h5>
+                                                <p class="card-text text-primary font-weight-bold">${{ $service->price }}</p>
+                                                <a href="#" class="btn btn-primary">Book Now</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
+            
+
+            
         </section>
         <footer id="footer" class="footer-v1">
             <div class="container">
@@ -214,15 +220,16 @@
                             <p class="text-xs-center crtext">&copy; 2024 Carcare. All Rights Reserved.</p>
                         </div>
                     </div>
-                </div>                
-            </div>            
+                </div>
+            </div>
         </footer>
     </div>
     <script type="text/javascript" src="{{ asset('assets/js/nav/jquery.sticky.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/totop/jquery.ui.totop.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/accordion/accordion.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
+    <script type="text/javascript"
+        src="{{ asset('assets/js/rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/maps/gmap3.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/fancybox/jquery.fancybox.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/carousel/carousel.js') }}"></script>
@@ -257,4 +264,5 @@
         });
     </script>
 </body>
+
 </html>

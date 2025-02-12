@@ -22,6 +22,36 @@
 </head>
 
 <body>
+    <style>
+        #chat-button {
+            position: fixed;
+            bottom: 30px; /* Adjusts the distance from the bottom of the screen */
+            right: 30px;  /* Adjusts the distance from the right edge */
+            background-color: #4a3df5; /* Background color for the button */
+            border-radius: 50%; /* Makes it circular */
+            width: 70px; /* Size of the button */
+            height: 70px; /* Size of the button */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 9999; /* Makes sure it stays on top of other elements */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 32px;
+        }
+    
+        #chat-button:hover {
+            transform: scale(1.1); /* Makes it slightly bigger when hovered */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+    
+        #chat-button .chat-icon {
+            color: white;
+            font-size: 24px; /* Increases the chat icon size */
+            text-decoration: none;
+        }
+    </style>
+    
     <div id="">
         <div class="info-head">
             <div class="container">
@@ -187,7 +217,7 @@
                                                     opacity: 0;
                                                     transition: opacity 0.3s ease;
                                                 ">
-                                                                    <a href="{{ route('user.services.show', $service->id) }}"
+                                                                    <a href="{{ route('user.services', $mechanic->id) }}"
                                                                         class="btn btn-primary"
                                                                         style="padding: 10px 20px; background-color: #ff7f50; border: none; color: white; border-radius: 8px; text-decoration: none;">
                                                                         View Shop
@@ -216,6 +246,19 @@
             </div>
     </div>
     </div>
+    <div id="chat-button">
+        <a href="#" onclick="openChat()" class="chat-icon">
+            <i class="fa fa-comment"></i>
+        </a>
+    </div>
+
+    <script>
+        // JavaScript to trigger chat window (Example)
+        function openChat() {
+            alert("Chat feature coming soon!");
+            // You can replace this with your chat window integration
+        }
+    </script>
 
     </section>
 
@@ -244,7 +287,12 @@
     <script type="text/javascript" src="{{ ('assets/js/bootstrap3-typeahead.min.js') }}"></script>
     <script type="text/javascript" src="{{ ('assets/js/main.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
-    <script type="text/javascript">
+    
+</body>
+
+</html>
+
+<script type="text/javascript">
         jQuery(document).ready(function () {
             jQuery('.tp-banner').show().revolution({
                 dottedOverlay: "none",
@@ -258,6 +306,3 @@
             });
         });
     </script>
-</body>
-
-</html>

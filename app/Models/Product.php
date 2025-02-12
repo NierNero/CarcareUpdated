@@ -9,20 +9,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
     
-    //protected $primaryKey = 'ProductID';
 
     protected $fillable = [
         'ProductName',
         'Description',
         'Price',
         'Inventory',
-        'mechanic_id', // Add mechanic_id to the fillable array
+        'mechanic_id' // Add mechanic_id to the fillable array
     ];
 
      // A product belongs to a user
-     public function user()
+     public function mechanic()
      {
         return $this->belongsTo(Mechanic::class);
      }

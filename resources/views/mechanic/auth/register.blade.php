@@ -1,14 +1,11 @@
 <x-guest-layout>
 
-@if ($errors->any())
-    <div>
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+<!-- Display the success message if available -->
+@if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
 
 <h3 class="text-center mb-3">Mechanic Register Page</h3>
 <form action="{{ route('mechanic.create') }}" method="POST" enctype="multipart/form-data">

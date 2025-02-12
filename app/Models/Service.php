@@ -15,5 +15,12 @@ class Service extends Authenticatable
         'name',
         'description',
         'price',
+        'mechanic_id' // Add mechanic_id to the fillable array
     ];
+
+    public function mechanic()
+     {
+        return $this->belongsTo(Mechanic::class, 'mechanic_id');
+     }
+
 }

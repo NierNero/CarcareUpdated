@@ -84,6 +84,26 @@
         .actions button:hover {
             background-color: #d32f2f;
         }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .search-container input {
+                width: 80%;
+            }
+            table {
+                font-size: 14px;
+            }
+        }
+
+        /* Mechanic's image preview styling */
+        .showPhoto {
+            width: 50px;
+            height: 50px;
+            margin: auto;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
     </style>
 </head>
 <body>
@@ -111,22 +131,24 @@
 
     <!-- Search Bar -->
     <div class="search-container">
-        <input type="text" placeholder="Search users or mechanics...">
+        <input type="text" id="searchInput" placeholder="Search users or mechanics..." onkeyup="searchTable()">
     </div>
 
     <!-- Table -->
     <div class="table-container">
-        <table>
+        <table id="userTable">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Shop Name</th>
                     <th>Contact No</th>
                     <th>Address</th>
                     <th>Email</th>
                     <th>Created At</th>
                     <th>Updated At</th>
                     <th>Image</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -162,17 +184,14 @@
                     <tr onclick="redirectToView('{{ route('admin.mechanic.view', $mechanic->id) }}')">
                         <td>{{ $mechanic->id }}</td>
                         <td>{{ $mechanic->name }}</td>
+                        <td>{{ $mechanic->shopname }}</td>
                         <td>{{ $mechanic->ContactNo }}</td>
                         <td>{{ $mechanic->Address }}</td>
                         <td>{{ $mechanic->email }}</td>
                         <td>{{ $mechanic->created_at }}</td>
                         <td>{{ $mechanic->updated_at }}</td>
                         <td>
-                            @if($mechanic->image)
-                                <img src="{{ asset('upload/mechanic/' . $mechanic->image) }}" alt="Mechanic Image" width="80">
-                            @else
-                                No Image
-                            @endif
+                            <div class="showPhoto" style="background-image:url('{{ $mechanic->image ? asset('upload/' . $mechanic->image) : asset('img/avatar.png') }}');"></div>
                         </td>
                         <td class="actions">
                             <form action="{{ route('admin.mechanic.destroy', $mechanic->id) }}" method="POST" style="display: inline;">
@@ -186,9 +205,31 @@
             </tbody>
         </table>
     </div>
+
     <script>
         function redirectToView(url) {
             window.location.href = url;
+        }
+
+        function searchTable() {
+            var input = document.getElementById("searchInput");
+            var filter = input.value.toLowerCase();
+            var table = document.getElementById("userTable");
+            var trs = table.getElementsByTagName("tr");
+
+            for (var i = 1; i < trs.length; i++) {
+                var td = trs[i].getElementsByTagName("td");
+                var match = false;
+                for (var j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        var txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                            match = true;
+                        }
+                    }
+                }
+                trs[i].style.display = match ? "" : "none";
+            }
         }
     </script>
 </body>

@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\UserController;
+
+
+
 
 
 Route::get('/', function () {
@@ -13,10 +17,16 @@ Route::get('/', function () {
 //});
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-    
-})->middleware(['auth', 'verified'])->name('dashboard');
+//Route::get('/dashboard', function () {
+//    return view('dashboard');
+//    
+//})->middleware(['auth', 'verified'])->name('dashboard');
+Route::prefix('user')->middleware('auth:user')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
+
 
 Route::get('/booknow', function () {
     return view('booknow');
@@ -49,9 +59,26 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/dashboard', [UserController::class, 'showMechananic'])->name('dashboard');
+
+
+Route::get('/mechanic/view/{id}', [UserController::class, 'viewMechanic'])->name('mechanic.view');
+
+Route::get('/mechanic/{id}/services', [UserController::class, 'viewMechanic'])->name('user.services');
 
 
 
+
+
+
+    //Route::get('/user/services', function() {
+    //    $services = [];
+    //    if (auth()->check()){
+    //        $services = auth()->user()->services()->latest()->get();
+    //
+    //    }
+    //    return view('user.services', compact('services'));
+    //})->name('user.services');
 
 
 

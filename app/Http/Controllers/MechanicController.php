@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Mechanic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+
 
 class MechanicController extends Controller
 {
@@ -53,7 +55,14 @@ class MechanicController extends Controller
         'Address' => $request->Address,      // Save Address
     ]);
 
-    return redirect()->route('mechanic.dashboard')->with('success', 'Mechanic added successfully!');
+    return redirect()->route('mechanic.login')->with('success', 'Mechanic added successfully!');
 }
+public function logout()
+    {
+        Auth::guard('mechanic')->logout(); // Log out the mechanic
+        
+        // Redirect to the login page with a success message
+        return redirect()->route('mechanic.login')->with('success', 'Logged out successfully!');
+    }
 
 }

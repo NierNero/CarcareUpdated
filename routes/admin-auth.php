@@ -64,6 +64,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
                 ->name('admin.logout');
 });
 
+
 // Routes for booking and report
 Route::get('/admin/adminbooking', function () {
     return view('admin.auth.adminbooking');
@@ -76,12 +77,14 @@ Route::get('/admin/adminreport', function () {
 // Routes for dashboard and deleting users and mechanics
 Route::get('/admin/dashboard', [AdminController::class, 'showUsers'])->name('admin.dashboard');
 
-// Separate delete routes for user and mechanic
-Route::delete('/admin/user/{id}', [AdminController::class, 'destroy'])->name('admin.user.destroy');
-Route::delete('/admin/mechanic/{id}', [AdminController::class, 'destroy'])->name('admin.mechanic.destroy');
 
 // Routes to view user and mechanic details
 Route::get('/admin/user/view/{id}', [AdminController::class, 'viewUser'])->name('admin.user.view');
 Route::get('/admin/mechanic/view/{id}', [AdminController::class, 'viewMechanic'])->name('admin.mechanic.view');
+
+// Separate delete routes for user and mechanic
+Route::delete('/admin/user/{id}', [AdminController::class, 'destroy'])->name('admin.user.destroy');
+Route::delete('/admin/mechanic/{id}', [AdminController::class, 'destroy'])->name('admin.mechanic.destroy');
+
 
 

@@ -25,6 +25,7 @@ class User extends Authenticatable
         'email',
         'password',
         'image',
+        'mechanic_id',
     ];
 
     /**
@@ -61,4 +62,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Product::class);
     }
+
+    public function services()
+    {
+        return $this->hasMany(Service::class);
+    }
+
+   
 }

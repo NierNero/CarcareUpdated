@@ -42,10 +42,33 @@ Route::prefix('mechanic')->middleware('guest:mechanic')->group(function () {
 });
 
 Route::prefix('mechanic')->middleware('auth:mechanic')->group(function () {
+    Route::get('/productdashboard', function () {
+        $products = [];
+        if (auth()->check()){
+            $products = auth()->user()->products()->latest()->get();
+
+        }
+        return view('mechanic.productdashboard', compact('products'));
+    })->name('mechanic.productdashboard');
 
     Route::get('/dashboard', function () {
-        return view('mechanic.dashboard');
+        $services = [];
+        if (auth()->check()){
+            $services = auth()->user()->services()->latest()->get();
+
+        }
+        return view('mechanic.dashboard', compact('services'));
     })->name('mechanic.dashboard');
+
+    //Route::get('/user/services', function() {
+    //    $services = [];
+    //    if (auth()->check()){
+    //        $services = auth()->user()->services()->latest()->get();
+//
+    //    }
+    //    return view('user.services', compact('services'));
+    //})->name('user.services');
+
 
     Route::get('verify-email', EmailVerificationPromptController2::class)
                 ->name('verification.notice');
@@ -106,8 +129,11 @@ Route::put('/mechanic/service/{service}', [ServiceController::class, 'update'])-
 
     Route::get('/mechanic/order', [OrderController::class, 'shworder'])->name('mechanic.order');
 
+    Route::get('/mechanics', [MechanicController::class, 'index'])->name('mechanics.index');
     Route::post('/mechanic/create', [MechanicController::class, 'store'])->name('mechanic.create');
     Route::post('/mechanic/dashboard', [MechanicController::class, 'index'])->name('mechanic.dashboard');
+    Route::post('/mechanic/logout', [MechanicController::class, 'logout'])->name('mechanic.logout');
+
 
 
 
