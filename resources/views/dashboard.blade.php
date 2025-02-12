@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>Carcare - Online Service Provider for your Car Needs</title>
@@ -13,14 +14,15 @@
     <link href="{{ ('assets/css/theme-responsive.css') }}" rel="stylesheet" media="screen">
     <link href="{{ ('assets/css/dtb/jquery.dataTables.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ ('assets/css/select2.min.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ ('assets/css/toastr.min.css') }}" rel="stylesheet" media="screen">        
+    <link href="{{ ('assets/css/toastr.min.css') }}" rel="stylesheet" media="screen">
     <script type="text/javascript" src="{{ ('assets/js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ ('assets/js/jquery-ui.1.10.4.min.js') }}"></script>
     <script type="text/javascript" src="{{ ('assets/js/toastr.min.js') }}"></script>
     <script type="text/javascript" src="{{ ('assets/js/modernizr.js') }}"></script>
 </head>
+
 <body>
-    <div id="layout">
+    <div id="">
         <div class="info-head">
             <div class="container">
                 <div class="row">
@@ -40,7 +42,8 @@
                     <div class="col-md-6">
                         <ul class="visible-md visible-lg text-right">
                             <li><i class="fa fa-comment"></i> Live Chat</li>
-                            <li><a href="index.php/changelocation.html"><i class="fa fa-map-marker"></i> University of High Blood</a></li>
+                            <li><a href="index.php/changelocation.html"><i class="fa fa-map-marker"></i> University of
+                                    High Blood</a></li>
                         </ul>
                     </div>
                 </div>
@@ -62,22 +65,22 @@
                     </li>
 
 
-                    </li>    
-                    <li> <a href=""{{ Auth::user()->name }}>My Account</a>
-                            <ul class="drop-down one-column hover-fade">
-                                <li><a href="{{ route('profile.edit') }}">Profile</a></li>
-                                <li><form method="POST" action="{{ route('logout') }}">
-                    <a href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                        </a>
-                    @csrf
                     </li>
-                            </ul>
+                    <li> <a href="" {{ Auth::user()->name }}>My Account</a>
+                        <ul class="drop-down one-column hover-fade">
+                            <li><a href="{{ route('profile.edit') }}">Profile</a></li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    <a href="route('logout')" onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                                        {{ __('Log Out') }}
+                                    </a>
+                                    @csrf
+                            </li>
+                        </ul>
 
-                    
-                            
+
+
                     </li>
 
             </nav>
@@ -87,9 +90,10 @@
                 <ul>
                     <li data-transition="slidevertical" data-slotamount="1" data-masterspeed="1000"
                         data-saveperformance="off" data-title="Slide">
-                        <img src="{{ ('assets/img/slide/mechanic1.jpeg') }}" alt="fullslide1" data-bgposition="center center"
-                            data-kenburns="on" data-duration="6000" data-ease="Linear.easeNone" data-bgfit="130"
-                            data-bgfitend="100" data-bgpositionend="right center">
+                        <img src="{{ ('assets/img/slide/mechanic1.jpeg') }}" alt="fullslide1"
+                            data-bgposition="center center" data-kenburns="on" data-duration="6000"
+                            data-ease="Linear.easeNone" data-bgfit="130" data-bgfitend="100"
+                            data-bgpositionend="right center">
                     </li>
 
                     <li data-transition="slidehorizontal" data-slotamount="1" data-masterspeed="1000"
@@ -107,13 +111,15 @@
                     <h2 style="color:#fff;">Visit SHOP</h2>
                     <p class="lead">Visit shop at very affordable price, </p>
                 </div>
-                <div class="filter-header">
-                    <form id="sform" action="searchservices" method="post">                        
-                        <input type="text" id="q" name="q" required="required" placeholder="What Services do you want?"
+                <div class="filter-header" style="margin-top: 20px; text-align: center;">
+                    <form id="form" action="{{ route('dashboard') }}" method="GET">
+                        @csrf
+                        <input type="text" name="q" id="searchMechanic" placeholder="Search for a mechanic..."
                             class="input-large typeahead" autocomplete="off">
                         <input type="submit" name="submit" value="Search">
                     </form>
                 </div>
+
             </div>
         </section>
         <section class="content-central">
@@ -125,7 +131,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -143,77 +149,76 @@
                                 <hr class="tall">
                             </div>
                         </div>
-                        <div class="portfolioContainer" style="margin-top: -50px;">
-                            <div class="col-xs-6 col-sm-4 col-md-3 hsgrids"
-                                style="padding-right: 5px;padding-left: 5px;">
-                                
-                                    <div class="img-hover">
-                                        <img src="{{ ('images/mechanic.jpg') }}" alt="AC Dry Servicing"
-                                            class="img-responsive">
-                                    </div>
-                                    <div class="info-gallery">
-                                    @if(Auth::user()->mechanic)
-                <p>Your mechanic's shop name is: {{ Auth::user()->mechanic->shopname }}</p>
-            @else
-                <p>You do not have a mechanic assigned yet.</p>
-            @endif
-                                        <div class="content-btn"><a href="{{ route('services') }}"
-                                                class="btn btn-primary">Visit Now</a>
-                                            </div>
-                                    </div>
-                                </a>
-                            </div>
-                            
-                            
+                        <div class="portfolioContainer"
+                            style="margin-top: -50px; display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; padding: 20px;">
+                            @if(isset($mechanics) && $mechanics->count())
+                                        @foreach ($mechanics as $mechanic)
+                                                    <div class="col-xs-6 col-sm-4 col-md-3 hsgrids"
+                                                        style="padding: 10px; display: flex; justify-content: center;">
+                                                        <div class="info-gallery" style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s ease, transform 0.3s ease; 
+                                            width: 260px; height: 340px; max-width: 100%;">
+
+                                                            <div class="showPhoto" style="
+                                                background-image: url('{{ $mechanic->image ? asset('upload/' . $mechanic->image) : asset('img/avatar.png') }}');
+                                                background-size: cover;
+                                                background-position: center;
+                                                background-repeat: no-repeat;
+                                                width: 100%;
+                                                height: 250px;
+                                                position: relative;
+                                                overflow: hidden;
+                                                border-top-left-radius: 12px;
+                                                border-top-right-radius: 12px;
+                                                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                                            " onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0, 0, 0, 0.2)'; this.querySelector('.overlay').style.opacity='1';"
+                                                                onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.1)'; this.querySelector('.overlay').style.opacity='0';">
+
+                                                                <!-- Overlay Effect -->
+                                                                <div class="overlay" style="
+                                                    position: absolute;
+                                                    top: 0;
+                                                    left: 0;
+                                                    width: 100%;
+                                                    height: 100%;
+                                                    background: rgba(0, 0, 0, 0.4);
+                                                    display: flex;
+                                                    justify-content: center;
+                                                    align-items: center;
+                                                    opacity: 0;
+                                                    transition: opacity 0.3s ease;
+                                                ">
+                                                                    <a href="{{ route('user.services.show', $service->id) }}"
+                                                                        class="btn btn-primary"
+                                                                        style="padding: 10px 20px; background-color: #ff7f50; border: none; color: white; border-radius: 8px; text-decoration: none;">
+                                                                        View Shop
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="shop-name"
+                                                                style="padding: 15px; text-align: center; font-weight: bold; font-size: 18px; color: #333;">
+                                                                <span>{{ $mechanic->shopname }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        @endforeach
+                            @else
+                                <p style="text-align: center; font-size: 16px; color: #777;">No mechanics available.</p>
+                            @endif
                         </div>
+
+
+                        </a>
                     </div>
+
+
                 </div>
             </div>
-            
-        </section>
-        <footer id="footer" class="footer-v1">
-            <div class="container">
-                <div class="row visible-sm visible-xs">
-                    <div class="col-md-6">
-                        <h3 class="mlist-h">CONTACT US</h3>
-                        <ul class="contact_footer mlist">
-                            <li class="location">
-                                <i class="fa fa-map-marker"></i> <a href="#"> Faridabad, Haryana, India</a>
-                            </li>
-                            <li>
-                                <i class="fa fa-envelope"></i> <a
-                                    href="mailto:contact@surfsidemedia.in">contact@surfsidemedia.in</a>
-                            </li>
-                            <li>
-                                <i class="fa fa-phone"></i> <a href="tel:+911234567890">+91-1234567890</a>
-                            </li>
-                        </ul>
-                        <ul class="social mlist-h">
-                            <li class="faceVisit"><span><i class="fa fa-faceVisit"></i></span><a href="#"></a></li>
-                            <li class="twitter"><span><i class="fa fa-twitter"></i></span><a href="#"></a></li>
-                            <li class="github"><span><i class="fa fa-instagram"></i></span><a href="#"></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-down">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <ul class="nav-footer">
-                                <li><a href="about-us.html">About Us</a> </li>
-                                <li><a href="contact-us.html">Contact Us</a></li>
-                                <li><a href="terms-of-use.html">Terms of Use</a></li>
-                                <li><a href="privacy.html">Privacy</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="text-xs-center crtext">&copy; 2024 Carcare. All Rights Reserved.</p>
-                        </div>
-                    </div>
-                </div>                
-            </div>            
-        </footer>
+    </div>
+    </div>
+
+    </section>
+
     </div>
     <script type="text/javascript" src="{{ ('assets/js/nav/jquery.sticky.js') }}"></script>
     <script type="text/javascript" src="{{ ('assets/js/totop/jquery.ui.totop.js') }}"></script>
@@ -254,4 +259,5 @@
         });
     </script>
 </body>
+
 </html>
