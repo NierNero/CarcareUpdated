@@ -39,15 +39,68 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin-bottom: 32px;
         }
-    
+        
         #chat-button:hover {
-            transform: scale(1.1); /* Makes it slightly bigger when hovered */
+            transform: scale(1.1);
+            /* Makes it slightly bigger when hovered */
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
-    
+
         #chat-button .chat-icon {
             color: white;
-            font-size: 24px; /* Increases the chat icon size */
+            font-size: 24px;
+            /* Increases the chat icon size */
+            text-decoration: none;
+        }
+
+        .product-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        .product-card .details {
+            padding: 10px;
+        }
+        .btn-add {
+            background: #ff5722;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
             text-decoration: none;
         }
     </style>
@@ -98,7 +151,7 @@
                     <li> <a href="{{ route('dashboard') }}">Home</a>
                     </li>
 
-                    <li> <a href="{{ route('user.product', $mechanic->id) }}">Shop</a>
+                    <li> <a href="{{ route('user.services', $mechanic->id) }}">Service</a>
                     </li>
 
                     </li>
@@ -119,153 +172,43 @@
 
                     </li>
 
-
-
-
-
-
-                    <!--<li class="login-form"> <a href="index.php/register.html" title="Register">Register</a></li>
-                    <li class="login-form"> <a href="login.html" title="Login">Login</a></li>
-                    <li class="search-bar">
-                    </li>-->
                 </ul>
             </nav>
         </header>
-        <section class="tp-banner-container">
-
-            <div class="filter-title">
-                <div class="title-header">
-                    <h2 style="color:#fff;">BOOK A SERVICE</h2>
-                    <p class="lead">Book a service at very affordable price, </p>
-                </div>
-                <div class="filter-header">
-                    <form id="sform" action="searchservices" method="post">
-                        <input type="text" id="q" name="q" required="required" placeholder="What Services do you want?"
-                            class="input-large typeahead" autocomplete="off">
-                        <input type="submit" name="submit" value="Search">
-                    </form>
-                </div>
-            </div>
-        </section>
 
         <div class="content_info content_resalt">
             <div class="container" style="margin-top: 30px;">
-                <div class="row">
-                </div>
+        </div>
             </div>
 
-        </div>
-        <div class="semiboxshadow text-center">
-            <img src="{{ ('assets/img/img-theme/shp.png') }}" class="img-responsive" alt="">
-        </div>
-        <div class="section-title-01 honmob">
-            <div class="bg_parallax image_01_parallax"></div>
-            <div class="opacy_bg_02">
-                <div class="container">
-                    <h1>All Services</h1>
-                    <div class="crumbs">
-                        <!--<ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li>/</li>
-                            <li>Service Categories</li>
-                        </ul>-->
-                    </div>
-                </div>
-            </div>
-        </div>
-        <section class="content-central">
-            <div class="container">
-                <div class="row" style="margin-top: 20px;">
-                    <div class="titles">
-                        <!--<h2>All <span>Services</span></h2>
-                        <i class="fa fa-plane"></i>
-                        <hr class="tall">-->
-                    </div>
-                </div>
-            </div>
-            <div class="content_info" style="margin-top: -70px;">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            @if($mechanic->services->isEmpty())
-                                <p class="text-center text-muted">No services found.</p>
-                            @else
-                                @foreach($mechanic->services as $service)
-                                    <div class="col-md-4">
-                                        <div class="card shadow-sm mb-4">
-                                            <div class="card-body text-center">
-                                                <h5 class="card-title">{{ $service->name }}</h5>
-                                                <p class="card-text text-primary font-weight-bold">${{ $service->price }}</p>
-                                                <a href="#" class="btn btn-primary">Book Now</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @endif
+        <div class="container">
+            <h2 class="text-center">Products</h2>
+            <div class="product-grid">
+                @foreach($products as $product)
+                    <div class="product-card">
+                        <img src="{{ asset('images/products/' . $product->image) }}" alt="{{ $product->ProductName }}">
+                        <div class="details">
+                            <h5>{{ $product->ProductName }}</h5>
+                            <p class="text-danger">₱{{ number_format($product->Price, 2) }}</p>
+                            <a href="#" class="btn-add">Add to Cart</a>
                         </div>
                     </div>
-                </div>
+                @endforeach
             </div>
-            
-            <div id="chat-button">
-                <a href="#" onclick="openChat()" class="chat-icon">
-                    <i class="fa fa-comment"></i>
-                </a>
-            </div>
-        
-            <script>
-                // JavaScript to trigger chat window (Example)
-                function openChat() {
-                    alert("Chat feature coming soon!");
-                    // You can replace this with your chat window integration
-                }
-            </script>
-            
-        </section>
-        <footer id="footer" class="footer-v1">
-            <div class="container">
-                <div class="row visible-sm visible-xs">
-                    <div class="col-md-6">
-                        <h3 class="mlist-h">CONTACT US</h3>
-                        <ul class="contact_footer mlist">
-                            <li class="location">
-                                <i class="fa fa-map-marker"></i> <a href="#"> Faridabad, Haryana, India</a>
-                            </li>
-                            <li>
-                                <i class="fa fa-envelope"></i> <a
-                                    href="mailto:contact@surfsidemedia.in">contact@surfsidemedia.in</a>
-                            </li>
-                            <li>
-                                <i class="fa fa-phone"></i> <a href="tel:+911234567890">+91-1234567890</a>
-                            </li>
-                        </ul>
-                        <ul class="social mlist-h">
-                            <li class="facebook"><span><i class="fa fa-facebook"></i></span><a href="#"></a></li>
-                            <li class="twitter"><span><i class="fa fa-twitter"></i></span><a href="#"></a></li>
-                            <li class="github"><span><i class="fa fa-instagram"></i></span><a href="#"></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-down">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <ul class="nav-footer">
-                                <li><a href="about-us.html">About Us</a> </li>
-                                <li><a href="contact-us.html">Contact Us</a></li>
-                                <li><a href="terms-of-use.html">Terms of Use</a></li>
-                                <li><a href="privacy.html">Privacy</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="text-xs-center crtext">&copy; 2024 Carcare. All Rights Reserved.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
+        </div>
+        <div id="chat-button">
+            <a href="#" onclick="openChat()" class="chat-icon">
+                <i class="fa fa-comment"></i>
+            </a>
+        </div>
+    
+        <script>
+            // JavaScript to trigger chat window (Example)
+            function openChat() {
+                alert("Chat feature coming soon!");
+                // You can replace this with your chat window integration
+            }
+        </script>
     <script type="text/javascript" src="{{ asset('assets/js/nav/jquery.sticky.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/totop/jquery.ui.totop.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/accordion/accordion.js') }}"></script>

@@ -23,6 +23,6 @@ class Product extends Authenticatable
      // A product belongs to a user
      public function mechanic()
      {
-        return $this->belongsTo(Mechanic::class);
+        return $this->belongsTo(Mechanic::class, 'mechanic_id');
      }
 }

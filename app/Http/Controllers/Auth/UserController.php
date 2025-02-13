@@ -6,17 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Mechanic;
 use App\Models\Service;
-
+use App\Models\Product;
 
 class UserController extends Controller
 {
-    public function showMechananic(Request $request)
+    public function showMechanic(Request $request)
     {
         $query = $request->input('q');
 
         if ($query) {
             $mechanics = Mechanic::where('shopname', 'LIKE', "%{$query}%")
-                ->orWhere('location', 'LIKE', "%{$query}%") // Modify based on your database columns
+                ->orWhere('location', 'LIKE', "%{$query}%")
                 ->get();
         } else {
             $mechanics = Mechanic::all();
@@ -29,10 +29,16 @@ class UserController extends Controller
     public function viewMechanic($id)
     {
         $mechanic = Mechanic::findOrFail($id);
-        $services = Service::where('mechanic_id', $id)->get(); // Get only the mechanic's services
-        if (!view()->exists('user.services')) {
-            dd('The view does not exist!');
-        }
+        $services = Service::where('mechanic_id', $id)->get();
+
         return view('user.services', compact('mechanic', 'services'));
+    }
+
+    public function viewMechanics($id)
+    {
+        $mechanic = Mechanic::findOrFail($id);
+        $products = Product::where('mechanic_id', $id)->get(); // Fetch mechanic's products
+
+        return view('user.product', compact('mechanic', 'products')); // Ensure 'products' is correctly passed
     }
 }

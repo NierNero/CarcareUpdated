@@ -43,9 +43,9 @@ Route::get('/cart', function () {
 })->middleware(['auth', 'verified'])->name('cart');
 
 
-Route::get('/services', function () {
-    return view('services');
-})->middleware(['auth', 'verified'])->name('services');
+//Route::get('/services', function () {
+//    return view('services');
+//})->middleware(['auth', 'verified'])->name('services');
 
 Route::get('/usershop', function () {
     return view('usershop');
@@ -59,14 +59,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/dashboard', [UserController::class, 'showMechananic'])->name('dashboard');
+Route::get('/dashboard', [UserController::class, 'showMechanic'])->name('dashboard');
 
-
+//User Service
 Route::get('/mechanic/view/{id}', [UserController::class, 'viewMechanic'])->name('mechanic.view');
 
 Route::get('/mechanic/{id}/services', [UserController::class, 'viewMechanic'])->name('user.services');
 
+//User Product
+Route::get('/mechanic/view/{id}', [UserController::class, 'viewMechanics'])->name('mechanic.view');
 
+Route::get('/mechanic/{id}/product', [UserController::class, 'viewMechanics'])->name('user.product');
 
 
 
