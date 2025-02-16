@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Mechanic;
+
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
@@ -99,4 +101,6 @@ class ProductController extends Controller
 
         return redirect()->route('mechanic.productdashboard')->with('success', 'Product deleted successfully.');
     }
+
+
 }

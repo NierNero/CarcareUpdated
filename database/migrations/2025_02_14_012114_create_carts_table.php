@@ -6,27 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('status')->default('pending'); // pending, in_transit, completed
-            $table->decimal('total_amount', 8, 2);
+            $table->foreignId('product_id')->nullable()->constrained()->onDelete('cascade');  // Foreign key for product (nullable)
+            $table->integer('quantity')->default(1);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('status');
-        });
+        Schema::dropIfExists('carts');
     }
 };

@@ -143,8 +143,8 @@
                     </li>
                     <!--<li> <a href="">My Cart/Booking</a>
                         <ul class="drop-down one-column hover-fade">
-                            <li><a href="{{ route('cart') }}">Cart</a></li>
-                            <li><a href="{{ route('booking') }}">Booking</a></li>
+                            {{-- <li><a href="{{ route('cart') }}">Cart</a></li>
+                            <li><a href="{{ route('booking') }}">Booking</a></li> --}}
                         </ul>-->
                     </li>
 
@@ -190,11 +190,23 @@
                         <div class="details">
                             <h5>{{ $product->ProductName }}</h5>
                             <p class="text-danger">₱{{ number_format($product->Price, 2) }}</p>
-                            <a href="#" class="btn-add">Add to Cart</a>
+                            <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <input type="hidden" name="mechanic_id" value="{{ $mechanic->id }}">
+                                <button type="submit" class="btn btn-success mt-3">🛒 Add to Cart</button>
+                            </form>
+                            
+                            {{-- <form action="{{ route('user.cart', $product->id) }}" method="Get">                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <input type="hidden" name="mechanic_id" value="{{ $mechanic->id }}">
+                                {{-- <label for="quantity">Quantity:</label>
+                                <input type="number" name="quantity" value="1" min="1" required> --}}
+                                {{-- <a href="{{ route('user.cart', parameters: ['id' => $product->mechanic_id]) }}" class="btn btn-success mt-3">🛒 Add to Cart</a> --}}
+                            {{-- </form> --}}
                         </div>
                     </div>
                 @endforeach
-            </div>
+
         </div>
         <div id="chat-button">
             <a href="#" onclick="openChat()" class="chat-icon">

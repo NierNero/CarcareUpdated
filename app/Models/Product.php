@@ -17,7 +17,8 @@ class Product extends Authenticatable
         'Description',
         'Price',
         'Inventory',
-        'mechanic_id' // Add mechanic_id to the fillable array
+        'mechanic_id', // Add mechanic_id to the fillable array
+        'user_id'
     ];
 
      // A product belongs to a user
@@ -25,4 +26,14 @@ class Product extends Authenticatable
      {
         return $this->belongsTo(Mechanic::class, 'mechanic_id');
      }
+     public function user()
+     {
+        return $this->belongsTo(User::class, 'user_id');
+     }
+
+     public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
 }

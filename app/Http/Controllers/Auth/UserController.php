@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Mechanic;
 use App\Models\Service;
 use App\Models\Product;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
@@ -41,4 +44,15 @@ class UserController extends Controller
 
         return view('user.product', compact('mechanic', 'products')); // Ensure 'products' is correctly passed
     }
+
+    // public function viewCart($id)
+    // {
+    //     $users = User::findOrFail($id);
+    //     $mechanic = Mechanic::where('user_id', $id)->get();
+    //     $products = Product::where('mechanic_id', $id)->get(); // Fetch mechanic's products
+
+    //     return view('user.cart', compact('mechanic', 'products')); // Ensure 'products' is correctly passed
+    // }
+
+    
 }

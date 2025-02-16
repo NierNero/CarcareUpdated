@@ -14,7 +14,7 @@
 <div class="dropdown">
         <a href="#" class="dropdown-toggle">Booking</a>
         <div class="dropdown-menu">
-        <a href="{{ route('mechanic.booking.show', ['status' => 'pending']) }}">Pending Booking</a>
+        <a href="{{ route('mechanic.booking.bookingdashboard', ['status' => 'pending']) }}">Pending Booking</a>
         <a href="{{ route('mechanic.booking.show', ['status' => 'completed']) }}">Completed Booking</a>
         <a href="{{ route('mechanic.booking.show', ['status' => 'cancelled']) }}">Cancelled Booking</a>
         </div>

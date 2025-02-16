@@ -2,71 +2,148 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Booking;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
-    // Display the list of bookings
+    // Show all customer pending orders to the mechanic
     public function show()
     {
-        $bookings = Booking::all();
-        return view('mechanic.booking.show', compact('bookings'));
+        // Retrieve all pending orders from all users
+        $allPendingOrders = $this->getAllPendingOrders();
+
+        return view('mechanic.booking.bookingdashboard', compact('allPendingOrders'));
     }
 
-    // Show the form to create a new booking
-    public function create()
+    // Accept a pending order
+    public function accept($userId, $productId)
     {
-        return view('mechanic.booking.create');
+        // Retrieve the specific user's pending orders
+        $pendingOrders = $this->getUserPendingOrders($userId);
+
+        if (isset($pendingOrders[$productId])) {
+            // Move the order to in-transit orders
+            $inTransitOrders = Session::get("in_transit_orders_$userId", []);
+            $inTransitOrders[$productId] = $pendingOrders[$productId];
+            $inTransitOrders[$productId]['status'] = 'in_transit'; // Update status
+            Session::put("in_transit_orders_$userId", $inTransitOrders);
+
+            // Remove the order from pending orders
+            unset($pendingOrders[$productId]);
+            $this->updateUserPendingOrders($userId, $pendingOrders);
+
+            return redirect()->route('mechanic.booking.show')->with('success', 'Order accepted and moved to In Transit!');
+        }
+
+        return redirect()->route('mechanic.booking.show')->with('error', 'Order not found!');
     }
 
-    // Store a new booking
-    public function store(Request $request)
+    // Decline a pending order
+    public function decline($userId, $productId)
     {
-        $request->validate([
-            'customer_name' => 'required|string|max:255',
-            'service' => 'required|string|max:255',
-            'booking_date' => 'required|date',
-            'booking_time' => 'required',
-        ]);
+        // Retrieve the specific user's pending orders
+        $pendingOrders = $this->getUserPendingOrders($userId);
 
-        $booking = Booking::create($request->all());
+        if (isset($pendingOrders[$productId])) {
+            // Remove the declined order
+            unset($pendingOrders[$productId]);
+            $this->updateUserPendingOrders($userId, $pendingOrders);
 
-        // Redirect to the specific booking's page after creation
-        return redirect()->route('mechanic.booking.show', $booking->id)
-                         ->with('success', 'Booking created successfully.');
+            return redirect()->route('mechanic.booking.show')->with('success', 'Order declined successfully!');
+        }
+
+        return redirect()->route('mechanic.booking.show')->with('error', 'Order not found!');
     }
 
-
-
-    // Edit a booking
-    public function edit(Booking $booking)
+    // Show in-transit orders for the user
+    public function inTransit()
     {
-        $booking = Booking::findOrFail($id);
-        return view('mechanic.booking.edit', compact('booking'));
+        $userId = Auth::id(); // Get the current user's ID
+        $inTransitOrders = Session::get("in_transit_orders_$userId", []); // Retrieve in-transit orders for the current user
+
+        return view('user.in_transit', compact('inTransitOrders'));
     }
 
-    // Update an existing booking
-    public function update(Request $request, Booking $booking)
+    // Helper method to get all pending orders from all users
+    protected function getAllPendingOrders()
     {
-        $request->validate([
-            'customer_name' => 'required|string|max:255',
-            'service' => 'required|string|max:255',
-            'booking_date' => 'required|date',
-            'booking_time' => 'required',
-        ]);
+        $allPendingOrders = [];
+        foreach (Session::all() as $key => $value) {
+            if (strpos($key, 'pending_orders_') === 0) { // Check if the key is for pending orders
+                $userId = str_replace('pending_orders_', '', $key);
+                $allPendingOrders[$userId] = $value;
+            }
+        }
 
-        $booking->update($request->all());
-
-        return redirect()->route('mechanic.booking.show')->with('success', 'Product updated successfully.');
-
+        return $allPendingOrders;
     }
 
-    // Delete a booking
-    public function destroy(Booking $booking)
+    // Helper method to get pending orders for a specific user
+    protected function getUserPendingOrders($userId)
     {
-        $booking->delete();
-
-        return redirect()->route('mechanic.bookings.index')->with('success', 'Booking deleted successfully.');
+        return Session::get("pending_orders_$userId", []);
     }
+
+    // Helper method to update pending orders for a specific user
+    protected function updateUserPendingOrders($userId, $pendingOrders)
+    {
+        Session::put("pending_orders_$userId", $pendingOrders);
+    }
+
+    // Mark an in-transit order as complete
+public function complete($userId, $productId)
+{
+    // Retrieve the specific user's in-transit orders
+    $inTransitOrders = Session::get("in_transit_orders_$userId", []);
+
+    if (isset($inTransitOrders[$productId])) {
+        // Move the order to completed orders
+        $completedOrders = Session::get("completed_orders_$userId", []);
+        $completedOrders[$productId] = $inTransitOrders[$productId];
+        $completedOrders[$productId]['status'] = 'completed'; // Update status
+        Session::put("completed_orders_$userId", $completedOrders);
+
+        // Remove the order from in-transit orders
+        unset($inTransitOrders[$productId]);
+        Session::put("in_transit_orders_$userId", $inTransitOrders);
+
+        return redirect()->route('user.in_transit')->with('success', 'Order marked as complete!');
+    }
+
+    return redirect()->route('user.in_transit')->with('error', 'Order not found!');
+}
+
+// Show completed orders for the user
+public function userComplete()
+{
+    $userId = Auth::id(); // Get the current user's ID
+    $completedOrders = Session::get("completed_orders_$userId", []); // Retrieve completed orders for the current user
+
+    return view('user.complete', compact('completedOrders'));
+}
+
+// Show completed orders for the mechanic
+public function mechanicComplete()
+{
+    // Retrieve all completed orders from all users
+    $allCompletedOrders = $this->getAllCompletedOrders();
+
+    return view('mechanic.booking.complete', compact('allCompletedOrders'));
+}
+
+// Helper method to get all completed orders from all users
+protected function getAllCompletedOrders()
+{
+    $allCompletedOrders = [];
+    foreach (Session::all() as $key => $value) {
+        if (strpos($key, 'completed_orders_') === 0) { // Check if the key is for completed orders
+            $userId = str_replace('completed_orders_', '', $key);
+            $allCompletedOrders[$userId] = $value;
+        }
+    }
+
+    return $allCompletedOrders;
+}
 }

@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completed Orders</title>
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
 
-    <title>Mechanic Bookings</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -45,32 +45,26 @@
             border: 1px solid #c3e6cb;
         }
 
-        .alert-error {
-            color: #721c24;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-        }
-
-        .bookings-table {
+        .completed-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
 
-        .bookings-table th,
-        .bookings-table td {
+        .completed-table th,
+        .completed-table td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
 
-        .bookings-table th {
+        .completed-table th {
             background-color: #f8f9fa;
             font-weight: bold;
             color: #333;
         }
 
-        .bookings-table td {
+        .completed-table td {
             vertical-align: middle;
         }
 
@@ -92,34 +86,24 @@
             color: #333;
         }
 
-        .btn {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-accept {
-            background-color: #28a745;
-            color: #fff;
-        }
-
-        .btn-decline {
-            background-color: #dc3545;
-            color: #fff;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-        }
-
-        .empty-bookings {
+        .empty-completed {
             text-align: center;
             font-size: 1.2rem;
             color: #555;
             padding: 20px;
+        }
+
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .home-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -131,49 +115,43 @@
         <div class="alert alert-success">{{ Session::get('success') }}</div>
     @endif
 
-    @if(Session::has('error'))
-        <div class="alert alert-error">{{ Session::get('error') }}</div>
-    @endif
-
     <div class="container">
-        @if(count($allPendingOrders) > 0)
-            <table class="bookings-table">
+        @if(count($allCompletedOrders) > 0)
+            <table class="completed-table">
                 <thead>
                     <tr>
                         <th>Product</th>
                         <th>Price</th>
                         <th>Status</th>
-                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($allPendingOrders as $userId => $orders)
-                        @foreach($orders as $productId => $product)
-                            <tr>
-                                <td>
-                                    <div class="product-info">
-                                        @if(isset($product['image']))
+                    @if(!empty($allCompletedOrders) && count($allCompletedOrders) > 0)
+                        @foreach($allCompletedOrders as $userId => $orders)
+                            @foreach($orders as $productId => $product)
+                                <tr>
+                                    <td>
+                                        <div class="product-info">
                                             <img src="{{ asset('images/products/' . $product['image']) }}" alt="{{ $product['ProductName'] }}">
-                                        @else
-                                            <img src="{{ asset('images/default-product.png') }}" alt="Default Image">
-                                        @endif
-                                        <h5>{{ $product['ProductName'] }}</h5>
-                                    </div>
-                                </td>
-                                <td>₱{{ number_format($product['Price'], 2) }}</td>
-                                <td>{{ $product['status'] ?? 'pending' }}</td>
-                                <td>
-                                    <a href="{{ route('mechanic.booking.accept', ['userId' => $userId, 'productId' => $productId]) }}" class="btn btn-accept">Accept</a>
-                                    <a href="{{ route('mechanic.booking.decline', ['userId' => $userId, 'productId' => $productId]) }}" class="btn btn-decline">Decline</a>
-                                </td>
-                            </tr>
+                                            <h5>{{ $product['ProductName'] }}</h5>
+                                        </div>
+                                    </td>
+                                    <td>₱{{ number_format($product['Price'], 2) }}</td>
+                                    <td>{{ $product['status'] }}</td>
+                                </tr>
+                            @endforeach
                         @endforeach
-                    @endforeach
+                    @else
+                        <tr>
+                            <td colspan="3" class="empty-completed">No completed orders found.</td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         @else
-            <p class="empty-bookings">No pending orders found.</p>
+            <p class="empty-completed">No completed orders found.</p>
         @endif
+        <a href="{{ route('mechanic.dashboard') }}" class="home-link">Back to Home</a>
     </div>
 </body>
 

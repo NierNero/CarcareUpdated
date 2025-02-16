@@ -2,37 +2,66 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\Cart;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function shworder()
+    public function index()
     {
-        $orders = Order::all();
-        //return $services;
-        return view('mechanic.order', compact('orders'));
+        $orders = auth()->user()->orders()->with('items.product')->get();
+        return view('orders.index', compact('orders'));
     }
 
-   
-
-    public function storage(Request $request)
+    public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
+        $user = auth()->user();
+        $cartItems = $user->carts()->with('product')->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
+        }
+
+        $totalAmount = $cartItems->sum(function ($item) {
+            return $item->quantity * $item->product->Price;
+        });
+
+        $order = Order::create([
+            'user_id' => $user->id,
+            'total_amount' => $totalAmount,
+            'status' => 'pending',
         ]);
 
-        Order::create($request->all());
+        foreach ($cartItems as $item) {
+            $order->items()->create([
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'price' => $item->product->Price,
+            ]);
+        }
 
-        return redirect()->route('mechanic.order')->with('success', 'Service created successfully.');
+        $user->carts()->delete();
+
+        return redirect()->route('orders.index')->with('success', 'Order placed successfully.');
     }
 
-    public function shows(Order $order)
+    public function updateStatus(Request $request, Order $order)
     {
-        return view('mechanic.order.show', compact('order'));
+        $order->update(['status' => $request->status]);
+        return redirect()->route('orders.index')->with('success', 'Order status updated.');
     }
 
-    
+    public function show(Order $order)
+{
+    // Ensure the order belongs to the authenticated user
+    if ($order->user_id !== auth()->id()) {
+        return redirect()->route('orders.index')->with('error', 'You are not authorized to view this order.');
+    }
+
+    // Load the order with its items and products
+    $order->load('items.product');
+
+    return view('orders.show', compact('order'));
+}
 }

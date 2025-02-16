@@ -26,6 +26,7 @@ class User extends Authenticatable
         'password',
         'image',
         'mechanic_id',
+        'product_id',
     ];
 
     /**
@@ -68,5 +69,14 @@ class User extends Authenticatable
         return $this->hasMany(Service::class);
     }
 
+    public function carts()
+{
+    return $this->hasMany(Cart::class);
+}
+
+public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
    
 }

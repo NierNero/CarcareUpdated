@@ -42,6 +42,14 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
+
+    public function logout()
+{
+    // Do not delete cart on logout
+    Auth::logout();
+
+    return redirect()->route('login'); // Redirect to the desired page after logout
+}
 }

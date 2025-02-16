@@ -136,13 +136,24 @@ Route::put('/mechanic/service/{service}', [ServiceController::class, 'update'])-
 
 
 
+    Route::get('/mechanic/booking/bookingdashboard', [BookingController::class, 'show'])
+    ->name('mechanic.booking.bookingdashboard')
+    ->middleware('auth:mechanic');
 
+    // Mechanic booking routes
+// Mechanic booking routes
+Route::get('/mechanic/bookings', [BookingController::class, 'show'])->name('mechanic.booking.show'); // List all bookings
+Route::get('/mechanic/bookings/accept/{userId}/{productId}', [BookingController::class, 'accept'])->name('mechanic.booking.accept'); // Accept a booking
+Route::get('/mechanic/bookings/decline/{userId}/{productId}', [BookingController::class, 'decline'])->name('mechanic.booking.decline'); // Decline a booking
 
-    Route::get('/mechanic/bookings', [BookingController::class, 'show'])->name('mechanic.booking.show');   // List all bookings
-Route::get('/mechanic/bookings/create', [BookingController::class, 'create'])->name('mechanic.booking.create'); // Show form to create a booking
-Route::post('/mechanic/bookings', [BookingController::class, 'store'])->name('mechanic.booking.store');   // Store new booking
-Route::delete('/mechanic/bookings/{booking}', [BookingController::class, 'destroy'])->name('mechanic.booking.destroy'); // Delete booking
-Route::get('/mechanic/bookings/{booking}/edit', [BookingController::class, 'edit'])->name('mechanic.booking.edit'); // Show form to edit a booking
-Route::put('/mechanic/bookings/{booking}', [BookingController::class, 'update'])->name('mechanic.booking.update'); // Update booking
+// In Transit route for users
+Route::get('/user/in-transit', [BookingController::class, 'inTransit'])->name('user.in_transit');
 
+// Complete order route for users
+// Complete order route for users
+Route::post('/user/complete/{userId}/{productId}', [BookingController::class, 'complete'])->name('user.complete');
+
+// Completed orders routes
+Route::get('/user/completed', [BookingController::class, 'userComplete'])->name('user.completed');
+Route::get('/mechanic/completed', [BookingController::class, 'mechanicComplete'])->name('mechanic.completed');
     

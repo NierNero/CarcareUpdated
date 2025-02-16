@@ -90,8 +90,8 @@
                     </li>
                     <!--<li> <a href="">My Cart/Booking</a>
                         <ul class="drop-down one-column hover-fade">
-                            <li><a href="{{ route('cart') }}">Cart</a></li>
-                            <li><a href="{{ route('booking') }}">Booking</a></li>
+                            {{-- <li><a href="{{ route('cart') }}">Cart</a></li>
+                            <li><a href="{{ route('booking') }}">Booking</a></li> --}}
                         </ul>-->
                     </li>
 

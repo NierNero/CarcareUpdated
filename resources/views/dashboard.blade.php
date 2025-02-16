@@ -62,9 +62,11 @@
                     </li>
                     <li> <a href="">My Cart</a>
                         <ul class="drop-down one-column hover-fade">
-                            <li><a href="{{ route('cart') }}">Cart</a></li>
+                            <li><a href="{{ route('cart.index') }}">Cart</a></li>
                         </ul>
                     </li>
+
+                    {{-- <a href="{{ route('user.in_transit') }}">View In Transit Orders</a> --}}
 
 
                     </li>
@@ -73,6 +75,7 @@
                             <li><a href="{{ route('profile.edit') }}">Profile</a></li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
                                     <a href="route('logout')" onclick="event.preventDefault();
                                         this.closest('form').submit();">
                                         {{ __('Log Out') }}

@@ -9,27 +9,28 @@ class Order extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'OrderID';
 
-    protected $fillable = [
-        'OwnerID',
-        'ShopID',
-        'PID',
-        'DateTime',
-    ];
+    protected $fillable = ['user_id', 'mechanic_id', 'status', 'total_amount'];
 
-    public function vehicleOwner()
+
+
+    public function User()
     {
-        return $this->belongsTo(VehicleOwner::class, 'OwnerID');
+        return $this->belongsTo(User::class, 'OwnerID');
     }
 
-    public function mechanicShop()
+    public function Mechanic()
     {
-        return $this->belongsTo(MechanicShop::class, 'ShopID');
+        return $this->belongsTo(Mechanic::class, 'ShopID');
     }
 
     public function shopInventory()
     {
         return $this->belongsTo(ShopInventory::class, 'PID');
+    }
+
+    public function items() 
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

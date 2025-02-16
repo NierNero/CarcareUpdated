@@ -3,45 +3,49 @@
 namespace App\Http\Controllers\Mechanic\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\MechanicLoginRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 
 class LoginController2 extends Controller
 {
-    /**
-     * Display the login view.
-     */
-    public function create(): View
+    // Show the mechanic login form
+    public function create()
     {
+        // If the mechanic is already authenticated, redirect to the dashboard
+        if (Auth::guard('mechanic')->check()) {
+            return redirect()->route('mechanic.dashboard');
+        }
+
         return view('mechanic.auth.login');
     }
 
-    /**
-     * Handle an incoming authentication request.
-     */
-    public function store(MechanicLoginRequest $request): RedirectResponse
+    // Handle mechanic login
+    public function store(Request $request)
     {
-        $request->authenticate();
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        $request->session()->regenerate();
+        // Attempt to authenticate the mechanic
+        if (Auth::guard('mechanic')->attempt($credentials)) {
+            return redirect()->route('mechanic.dashboard');
+        }
 
-        return redirect()->intended(route('mechanic.dashboard', absolute: false));
+        // If authentication fails, redirect back with an error message
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
-    public function destroy(Request $request): RedirectResponse
+    // Logout the mechanic
+    public function destroy(Request $request)
     {
         Auth::guard('mechanic')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
-        return redirect('/mechanic/login');
+        return redirect()->route('mechanic.login');
     }
 }

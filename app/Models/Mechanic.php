@@ -67,4 +67,14 @@ class Mechanic extends Authenticatable
     {
         return $this->hasMany(Service::class, 'mechanic_id');
     }
+
+    // public function serviceMechanics()
+    // {
+    //     return $this->hasMany(ServiceMechanic::class);
+    // }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }
