@@ -27,6 +27,7 @@
                                 {{ ucfirst($order->status) }}
                             </span>
                         </td>
+                        <td>{{ $order->user->last_name }}</td>
                         <td>${{ $order->total_amount }}</td>
                         <td>
                             <a href="{{ route('orders.show', $order) }}" class="btn btn-primary">View Details</a>

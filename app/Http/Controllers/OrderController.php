@@ -53,15 +53,41 @@ class OrderController extends Controller
     }
 
     public function show(Order $order)
-{
-    // Ensure the order belongs to the authenticated user
-    if ($order->user_id !== auth()->id()) {
-        return redirect()->route('orders.index')->with('error', 'You are not authorized to view this order.');
+    {
+        // Ensure the order belongs to the authenticated user
+        if ($order->user_id !== auth()->id()) {
+            return redirect()->route('orders.index')->with('error', 'You are not authorized to view this order.');
+        }
+
+        // Load the order with its items and products
+        $order->load('items.product');
+
+        return view('orders.show', compact('order'));
     }
 
-    // Load the order with its items and products
-    $order->load('items.product');
+    public function pendingOrders()
+    {
+        $orders = auth()->user()->orders()->where('status', 'pending')->get();
+        return view('user.pending', compact('orders'));
+    }
 
-    return view('orders.show', compact('order'));
-}
+    public function inTransitOrders()
+    {
+        $orders = auth()->user()->orders()->where('status', 'in_transit')->get();
+        return view('user.in_transit', compact('orders'));
+    }
+
+    // Show denied orders for the user
+    public function deniedOrders()
+    {
+        $orders = auth()->user()->orders()->where('status', 'denied')->get();
+        return view('user.denied', compact('orders'));
+    }
+
+    // Show completed orders for the user
+    public function completedOrders()
+    {
+        $orders = auth()->user()->orders()->where('status', 'completed')->get();
+        return view('user.completed', compact('orders'));
+    }
 }

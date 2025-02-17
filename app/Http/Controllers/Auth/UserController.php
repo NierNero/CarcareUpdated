@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Mechanic;
 use App\Models\Service;
 use App\Models\Product;
-use App\Models\User;
+use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -53,6 +53,32 @@ class UserController extends Controller
 
     //     return view('user.cart', compact('mechanic', 'products')); // Ensure 'products' is correctly passed
     // }
+
+    public function pendingOrders()
+    {
+        $orders = auth()->user()->orders()->where('status', 'pending')->get();
+        return view('user.pending', compact('orders'));
+    }
+
+    public function inTransitOrders()
+    {
+        $orders = auth()->user()->orders()->where('status', 'in_transit')->get();
+        return view('user.in_transit', compact('orders'));
+    }
+
+    // Show denied orders for the user
+    public function deniedOrders()
+    {
+        $orders = auth()->user()->orders()->where('status', 'denied')->get();
+        return view('user.denied', compact('orders'));
+    }
+
+    // Show completed orders for the user
+    public function completedOrders()
+    {
+        $orders = auth()->user()->orders()->where('status', 'completed')->get();
+        return view('user.completed', compact('orders'));
+    }
 
     
 }

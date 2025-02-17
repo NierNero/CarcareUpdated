@@ -10,23 +10,23 @@ class Order extends Model
     use HasFactory;
 
 
-    protected $fillable = ['user_id', 'mechanic_id', 'status', 'total_amount'];
+    protected $fillable = ['user_id', 'mechanic_id','prdouct_id', 'status', 'total_amount'];
 
 
 
     public function User()
     {
-        return $this->belongsTo(User::class, 'OwnerID');
+        return $this->belongsTo(User::class);
     }
 
     public function Mechanic()
     {
-        return $this->belongsTo(Mechanic::class, 'ShopID');
+        return $this->belongsTo(Mechanic::class);
     }
 
-    public function shopInventory()
+    public function Product()
     {
-        return $this->belongsTo(ShopInventory::class, 'PID');
+        return $this->belongsTo(Product::class);
     }
 
     public function items() 

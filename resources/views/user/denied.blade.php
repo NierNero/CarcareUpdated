@@ -1,7 +1,7 @@
 <div class="container">
-    <h1>In Transit Orders</h1>
+    <h1>Denied Orders</h1>
     @if($orders->isEmpty())
-        <p>You have no orders in transit.</p>
+        <p>You have no denied orders.</p>
     @else
         <table class="table">
             <thead>

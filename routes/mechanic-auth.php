@@ -15,6 +15,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MechanicController;
 use App\Http\Controllers\BookingController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('mechanic')->middleware('guest:mechanic')->group(function () {
@@ -127,9 +128,9 @@ Route::put('/mechanic/service/{service}', [ServiceController::class, 'update'])-
     Route::get('/mechanic/products/{product}/edit', [ProductController::class, 'edit'])->name('mechanic.product.edit');
     Route::put('/mechanic/products/{product}', [ProductController::class, 'update'])->name('mechanic.update');
 
-    Route::get('/mechanic/order', [OrderController::class, 'shworder'])->name('mechanic.order');
+    Route::get('/mechanic/order', [OrderController::class, 'show'])->name('mechanic.order');
 
-    Route::get('/mechanics', [MechanicController::class, 'index'])->name('mechanics.index');
+    //Route::get('/mechanics', [MechanicController::class, 'index'])->name('mechanics.index');
     Route::post('/mechanic/create', [MechanicController::class, 'store'])->name('mechanic.create');
     Route::post('/mechanic/dashboard', [MechanicController::class, 'index'])->name('mechanic.dashboard');
     Route::post('/mechanic/logout', [MechanicController::class, 'logout'])->name('mechanic.logout');
@@ -139,21 +140,24 @@ Route::put('/mechanic/service/{service}', [ServiceController::class, 'update'])-
     Route::get('/mechanic/booking/bookingdashboard', [BookingController::class, 'show'])
     ->name('mechanic.booking.bookingdashboard')
     ->middleware('auth:mechanic');
+    Route::get('/mechanic/bookings', [BookingController::class, 'show'])->name('mechanic.booking.show'); // List all bookings
+
 
     // Mechanic booking routes
 // Mechanic booking routes
-Route::get('/mechanic/bookings', [BookingController::class, 'show'])->name('mechanic.booking.show'); // List all bookings
-Route::get('/mechanic/bookings/accept/{userId}/{productId}', [BookingController::class, 'accept'])->name('mechanic.booking.accept'); // Accept a booking
-Route::get('/mechanic/bookings/decline/{userId}/{productId}', [BookingController::class, 'decline'])->name('mechanic.booking.decline'); // Decline a booking
+
 
 // In Transit route for users
-Route::get('/user/in-transit', [BookingController::class, 'inTransit'])->name('user.in_transit');
 
 // Complete order route for users
 // Complete order route for users
-Route::post('/user/complete/{userId}/{productId}', [BookingController::class, 'complete'])->name('user.complete');
 
 // Completed orders routes
-Route::get('/user/completed', [BookingController::class, 'userComplete'])->name('user.completed');
-Route::get('/mechanic/completed', [BookingController::class, 'mechanicComplete'])->name('mechanic.completed');
-    
+
+Route::middleware('auth:mechanic')->group(function () {
+    Route::get('/mechanic/orders', [MechanicController::class, 'orders'])->name('mechanic.orders');
+    Route::get('/mechanic/orders/{order}', [MechanicController::class, 'showOrder'])->name('mechanic.orders.show');
+    Route::post('/mechanic/orders/{order}/update-status', [MechanicController::class, 'updateOrderStatus'])->name('mechanic.orders.updateStatus');
+    Route::get('/mechanic', [MechanicController::class, 'index'])->name('mechanic.index');
+
+});

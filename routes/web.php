@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\MechanicOrderListController;
+
 
 
 
@@ -32,7 +34,7 @@ Route::prefix('user')->middleware('auth:user')->group(function () {
 
 Route::get('/booknow', function () {
     return view('booknow');
-    
+
 })->middleware(['auth', 'verified'])->name('booknow');
 
 
@@ -82,45 +84,14 @@ Route::middleware('auth')->group(function () {
     Route::resource('orders', OrderController::class);
     Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
-
+    Route::post('/orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+    
 });
 
-// Route for viewing the cart
-// Route::get('/cart', [CartController::class, 'index'])->name('user.cart');
-// Route::get('/cart/remove/{product}', [CartController::class, 'remove'])->name('user.cart.remove');
-// Route::post('/cart/buy', [CartController::class, 'buy'])->name('user.cart.buy');
-
-// // Pending orders route
-// Route::get('/pending', [CartController::class, 'pending'])->name('user.pending');
-
-// Route::get('/cart', [CartController::class, 'showCart'])->name('user.cart');
-//     Route::get('/add-to-cart/{productId}', [CartController::class, 'addToCart'])->name('user.addToCart');
-//     Route::get('/remove-from-cart/{cartId}', [CartController::class, 'removeFromCart'])->name('user.removeFromCart');
-//     Route::get('/clear-cart', [CartController::class, 'clearCart'])->name('user.clearCart');
-
-//Route::get('user/cart/{id}', [ProductController::class, 'viewCart'])->name('user.cart');
-//// Route for adding products to the cart
-//Route::post('user/cart/{product}/add', [ProductController::class, 'addToCart'])->name('cart.add');
-//// Route to remove an item from the cart
-//Route::delete('user/cart/{cartItemId}/remove', [ProductController::class, 'removeCartItem'])->name('user.cart.remove');
-
-
-// Route::get('user/cart', [CartController::class, 'index'])->name('user.cart');
-// Route::post('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
-// Route::delete('/cart/remove{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-
-//Route::get('/user/cart/view/{id}', [UserController::class, 'viewCart'])->name('user.cart.view');
-//Route::post('/user/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('user.cart.remove');
-
-
-    //Route::get('/user/services', function() {
-    //    $services = [];
-    //    if (auth()->check()){
-    //        $services = auth()->user()->services()->latest()->get();
-    //
-    //    }
-    //    return view('user.services', compact('services'));
-    //})->name('user.services');
+Route::get('/user/pending', [OrderController::class, 'pendingOrders'])->name('user.pending');
+    Route::get('/user/in-transit', [OrderController::class, 'inTransitOrders'])->name('user.in_transit');
+    Route::get('/user/denied', [OrderController::class, 'deniedOrders'])->name('user.denied');
+    Route::get('/user/completed', [OrderController::class, 'completedOrders'])->name('user.completed');
 
 
 
@@ -131,9 +102,9 @@ Route::middleware('auth')->group(function () {
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
-require __DIR__.'/admin-auth.php';
+require __DIR__ . '/admin-auth.php';
 
-require __DIR__.'/mechanic-auth.php';
+require __DIR__ . '/mechanic-auth.php';
 
