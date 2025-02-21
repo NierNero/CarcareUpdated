@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\Cart;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -15,36 +15,44 @@ class OrderController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $user = auth()->user();
-        $cartItems = $user->carts()->with('product')->get();
+{
+    $user = auth()->user();
+    $cartItems = $user->carts()->with('product')->get();
 
-        if ($cartItems->isEmpty()) {
-            return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
-        }
-
-        $totalAmount = $cartItems->sum(function ($item) {
-            return $item->quantity * $item->product->Price;
-        });
-
-        $order = Order::create([
-            'user_id' => $user->id,
-            'total_amount' => $totalAmount,
-            'status' => 'pending',
-        ]);
-
-        foreach ($cartItems as $item) {
-            $order->items()->create([
-                'product_id' => $item->product_id,
-                'quantity' => $item->quantity,
-                'price' => $item->product->Price,
-            ]);
-        }
-
-        $user->carts()->delete();
-
-        return redirect()->route('orders.index')->with('success', 'Order placed successfully.');
+    if ($cartItems->isEmpty()) {
+        return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
     }
+
+    $totalAmount = $cartItems->sum(function ($item) {
+        return $item->quantity * $item->product->Price;
+    });
+
+    // Store the cart data temporarily in the session
+    session()->put('cart_data', [
+        'user_id' => $user->id,
+        'total_amount' => $totalAmount,
+        'cart_items' => $cartItems, // Ensure cart_items is set
+    ]);
+
+    $order = Order::create([
+        'user_id' => $user->id,
+        'total_amount' => $totalAmount,
+        'status' => 'pending',
+        'payment_method' => $request->payment_method, // Add payment_method
+    ]);
+
+    foreach ($cartItems as $item) {
+        $order->items()->create([
+            'product_id' => $item->product_id,
+            'quantity' => $item->quantity,
+            'price' => $item->product->Price,
+        ]);
+    }
+
+    $user->carts()->delete();
+
+    return redirect()->route('orders.index')->with('success', 'Order placed successfully.');
+}
 
     public function updateStatus(Request $request, Order $order)
     {
@@ -90,4 +98,10 @@ class OrderController extends Controller
         $orders = auth()->user()->orders()->where('status', 'completed')->get();
         return view('user.completed', compact('orders'));
     }
+
+    public function paymentPage()
+{
+    return view('payment');
+}
+
 }

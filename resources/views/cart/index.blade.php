@@ -29,10 +29,10 @@
                 @endforeach
             </tbody>
         </table>
-        <form action="{{ route('orders.store') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn btn-primary">Checkout</button>
-        </form>
+
+        {{-- Redirect to payment selection page --}}
+        <a href="{{ route('payments.index') }}" class="btn btn-primary">Checkout</a>
     @endif
+
     <a href="{{ route('dashboard') }}" class="home-link">Back to Home</a>
 </div>

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('product_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('status')->default('pending'); // pending, in_transit, completed
             $table->decimal('total_amount', 8, 2);
+            $table->string('payment_method')->nullable(); // Add payment_method column
             $table->timestamps();
         });
     }
@@ -28,6 +29,7 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('status');
+            $table->dropColumn('payment_method'); // Drop payment_method column
         });
     }
 };

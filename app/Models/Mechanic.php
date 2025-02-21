@@ -26,6 +26,9 @@ class Mechanic extends Authenticatable
         'shopname',
         'image',
         'password',
+        'verified',     // New field for verified status
+        'longitude',    // New field for longitude
+        'latitude',     // New field for latitude
     ];
 
     /**

@@ -15,6 +15,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\MechanicController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\PaymentController;
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -160,4 +162,12 @@ Route::middleware('auth:mechanic')->group(function () {
     Route::post('/mechanic/orders/{order}/update-status', [MechanicController::class, 'updateOrderStatus'])->name('mechanic.orders.updateStatus');
     Route::get('/mechanic', [MechanicController::class, 'index'])->name('mechanic.index');
 
+});
+
+Route::middleware('auth')->group(function () {
+    // Payment page
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
+
+    // Process payment
+    Route::post('/payments/process', [PaymentController::class, 'process'])->name('payments.process');
 });

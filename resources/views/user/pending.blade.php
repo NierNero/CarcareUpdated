@@ -11,6 +11,7 @@
                     <th>Items</th>
                     <th>Total Amount</th>
                     <th>Status</th>
+                    <th>Payment Method</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -30,6 +31,7 @@
                                 {{ ucfirst($order->status) }}
                             </span>
                         </td>
+                        <td>{{ $order->payment_method ?? 'N/A' }}</td>
                         <td>
                             <a href="{{ route('orders.show', $order) }}" class="btn btn-primary btn-sm">View Details</a>
                         </td>

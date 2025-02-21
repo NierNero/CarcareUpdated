@@ -17,6 +17,23 @@
             </p>
             <p class="card-text"><strong>Total Amount:</strong> ${{ $order->total_amount }}</p>
             <p class="card-text"><strong>Order Date:</strong> {{ $order->created_at->format('M d, Y H:i A') }}</p>
+
+            <!-- Add Payment Method here -->
+            <p class="card-text"><strong>Payment Method:</strong>
+                @switch($order->payment_method)
+                    @case('card')
+                        Credit/Debit Card
+                        @break
+                    @case('paypal')
+                        PayPal
+                        @break
+                    @case('cash')
+                        Cash on Delivery
+                        @break
+                    @default
+                        N/A
+                @endswitch
+            </p>
         </div>
     </div>
 

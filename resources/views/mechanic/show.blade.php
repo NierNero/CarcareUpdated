@@ -15,9 +15,25 @@
                     {{ ucfirst($order->status) }}
                 </span>
             </p>
-            <p class="card-text"><strong>User:</strong> {{ $order->user ? $order->user->first_name : 'N/A' }}</p>
             <p class="card-text"><strong>Total Amount:</strong> ${{ $order->total_amount }}</p>
             <p class="card-text"><strong>Order Date:</strong> {{ $order->created_at->format('M d, Y H:i A') }}</p>
+
+            <!-- Add Payment Method here -->
+            <p class="card-text"><strong>Payment Method:</strong>
+                @switch($order->payment_method)
+                    @case('card')
+                        Credit/Debit Card
+                        @break
+                    @case('paypal')
+                        PayPal
+                        @break
+                    @case('cash')
+                        Cash on Delivery
+                        @break
+                    @default
+                        N/A
+                @endswitch
+            </p>
         </div>
     </div>
 
@@ -37,35 +53,11 @@
                     <td>{{ $item->product->ProductName }}</td>
                     <td>{{ $item->quantity }}</td>
                     <td>${{ $item->price }}</td>
-                    <td>${{$item->product->Price * $item->quantity}}</td>
+                    <td>${{ $item->quantity * $item->price }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
-    <!-- Mechanic Actions -->
-    <div class="mt-4">
-        <form action="{{ route('mechanic.orders.updateStatus', $order) }}" method="POST" class="d-inline">
-            @csrf
-            <input type="hidden" name="status" value="accepted">
-            <button type="submit" class="btn btn-success">Accept Order</button>
-        </form>
-        <form action="{{ route('mechanic.orders.updateStatus', $order) }}" method="POST" class="d-inline">
-            @csrf
-            <input type="hidden" name="status" value="denied">
-            <button type="submit" class="btn btn-danger">Deny Order</button>
-        </form>
-        <form action="{{ route('mechanic.orders.updateStatus', $order) }}" method="POST" class="d-inline">
-            @csrf
-            <input type="hidden" name="status" value="in_transit">
-            <button type="submit" class="btn btn-info">Mark as In Transit</button>
-        </form>
-        <form action="{{ route('mechanic.orders.updateStatus', $order) }}" method="POST" class="d-inline">
-            @csrf
-            <input type="hidden" name="status" value="completed">
-            <button type="submit" class="btn btn-primary">Mark as Completed</button>
-        </form>
-    </div>
-
-    <a href="{{ route('mechanic.orders') }}" class="btn btn-secondary mt-3">Back to Orders</a>
+    <a href="{{ route('orders.index') }}" class="btn btn-secondary">Back to Orders</a>
 </div>

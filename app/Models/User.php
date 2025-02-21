@@ -23,6 +23,13 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'email',
+        'address',
+        'province',
+        'region',
+        'zip_code',
+        'phone_number',
+        'car_type',
+        'car_model',
         'password',
         'image',
         'mechanic_id',
@@ -78,5 +85,9 @@ public function orders()
     {
         return $this->hasMany(Order::class);
     }
+    public function cars()
+{
+    return $this->hasMany(Car::class);
+}
    
 }

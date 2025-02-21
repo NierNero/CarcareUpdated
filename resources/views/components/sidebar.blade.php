@@ -5,7 +5,7 @@
         <div class="dropdown">
             <a href="{{ route('mechanic.order') }}" class="dropdown-toggle">Orders</a>
             <div class="dropdown-menu">
-                <a href="{{ route('mechanic.order', ['status' => 'pending']) }}">Pending Orders</a>
+                <a href="{{ route('mechanic.booking.bookingdashboard', ['status' => 'pending']) }}">Pending Orders</a>
                 <a href="{{ route('mechanic.order', ['status' => 'completed']) }}">Completed Orders</a>
                 <a href="{{ route('mechanic.order', ['status' => 'cancelled']) }}">Cancelled Orders</a>
             </div>
@@ -14,7 +14,7 @@
 <div class="dropdown">
         <a href="#" class="dropdown-toggle">Booking</a>
         <div class="dropdown-menu">
-        <a href="{{ route('mechanic.booking.bookingdashboard', ['status' => 'pending']) }}">Pending Booking</a>
+        <a href="{{ route('mechanic.orders', ['status' => 'pending']) }}">Pending Booking</a>
         <a href="{{ route('mechanic.booking.show', ['status' => 'completed']) }}">Completed Booking</a>
         <a href="{{ route('mechanic.booking.show', ['status' => 'cancelled']) }}">Cancelled Booking</a>
         </div>

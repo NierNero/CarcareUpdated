@@ -21,6 +21,9 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('shopname')->nullable();
             $table->string('image')->nullable(); // to store the shop image path
+            $table->boolean('verified')->default(false);
+            $table->decimal('longitude', 10, 7)->nullable();
+            $table->decimal('latitude', 10, 7)->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

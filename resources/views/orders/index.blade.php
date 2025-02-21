@@ -8,6 +8,7 @@
                 <tr>
                     <th>Order ID</th>
                     <th>Status</th>
+                    <th>Name</th>
                     <th>Total Amount</th>
                     <th>Details</th>
                 </tr>

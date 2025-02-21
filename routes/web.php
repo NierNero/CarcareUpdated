@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\MechanicOrderListController;
 
 
 
@@ -93,7 +92,9 @@ Route::get('/user/pending', [OrderController::class, 'pendingOrders'])->name('us
     Route::get('/user/denied', [OrderController::class, 'deniedOrders'])->name('user.denied');
     Route::get('/user/completed', [OrderController::class, 'completedOrders'])->name('user.completed');
 
+    // Route::get('/payment', [OrderController::class, 'paymentPage'])->name('orders.payment');
 
+  
 
 
 
