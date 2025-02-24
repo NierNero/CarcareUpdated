@@ -18,6 +18,11 @@ return new class extends Migration
             $table->string('Description');
             $table->decimal('Price', 8, 2);
             $table->integer('Inventory');
+            // $table->string('color'); 
+            // $table->string('width'); 
+            // $table->string('weight'); 
+            // $table->string('height'); 
+            // $table->string('image')->nullable(); // to store the shop image path
             $table->foreignId('mechanic_id')->constrained(); // Add foreign key
             $table->timestamps();
         });

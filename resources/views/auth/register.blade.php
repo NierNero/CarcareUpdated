@@ -15,6 +15,16 @@
 
         /* Example register button with subtle gradient & hover effect */
 
+        .btn-register {
+        background-color: #0C2E5B;
+        color: #fff;
+        border: none;
+        padding: 10px 18px;
+        font-size: 0.95rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
         body {
             font-family: 'Arial', sans-serif;
@@ -185,8 +195,15 @@
 
                 <!-- First Name -->
                 <div>
-                    <label for="first_name">User Name</label>
+                    <label for="first_name">First Name</label>
                     <input id="first_name" type="text" name="first_name" required autofocus autocomplete="first_name">
+                </div>
+
+                
+                <!-- Last Name -->
+                <div>
+                    <label for="last_name">Last Name</label>
+                    <input id="last_name" type="text" name="last_name" required autocomplete="last_name">
                 </div>
 
                 <!-- Email -->
@@ -225,11 +242,6 @@
                     <input id="zip_code" type="number" name="zip_code" required autocomplete="zip_code">
                 </div>
 
-                <!-- Last Name -->
-                <div>
-                    <label for="last_name">Last Name</label>
-                    <input id="last_name" type="text" name="last_name" required autocomplete="last_name">
-                </div>
 
                 <!-- Password -->
                 <div>
@@ -244,6 +256,7 @@
                 </div>
 
                 <!-- Profile Image (Full width row) -->
+                {{-- <div class="full-width"> --}}
                 <div class="full-width">
                     <label for="image">Profile Image</label>
                     <input id="image" type="file" name="image" accept="image/*">
@@ -267,18 +280,57 @@
                 <!-- Footer Actions: Cancel + Register buttons -->
                 <div class="button-row">
                     <a href="{{ route('login') }}" class="btn btn-cancel">Cancel</a>
-                    <x-primary-button class="ms-4">
-                        {{ __('Register') }}
-                    </x-primary-button>
+                    <button type="submit" class="btn-register">
+                        Register
+                    </button>
                 </div>
             </form>
         </div>
     </div>
+    
 
     <!-- JavaScript for Car Inputs & Image Preview -->
     <script>
-        // Dynamic Car Inputs
-    
+        // Array to keep track of added car inputs
+        let carCount = 1; // Start from 1 since we have one car input initially
+
+        document.getElementById('add-car').addEventListener('click', function() {
+            const carInputsContainer = document.getElementById('car-inputs');
+            const newCarDiv = document.createElement('div');
+            newCarDiv.classList.add('car-info');
+
+            // Add new car type input
+            const carTypeLabel = document.createElement('label');
+            carTypeLabel.setAttribute('for', `car_type_${carCount}`);
+            carTypeLabel.textContent = 'Car Type';
+            newCarDiv.appendChild(carTypeLabel);
+
+            const carTypeInput = document.createElement('input');
+            carTypeInput.setAttribute('id', `car_type_${carCount}`);
+            carTypeInput.setAttribute('type', 'text');
+            carTypeInput.setAttribute('name', 'car_type[]');
+            carTypeInput.required = true;
+            newCarDiv.appendChild(carTypeInput);
+
+            // Add new car model input
+            const carModelLabel = document.createElement('label');
+            carModelLabel.setAttribute('for', `car_model_${carCount}`);
+            carModelLabel.textContent = 'Car Model';
+            newCarDiv.appendChild(carModelLabel);
+
+            const carModelInput = document.createElement('input');
+            carModelInput.setAttribute('id', `car_model_${carCount}`);
+            carModelInput.setAttribute('type', 'text');
+            carModelInput.setAttribute('name', 'car_model[]');
+            carModelInput.required = true;
+            newCarDiv.appendChild(carModelInput);
+
+            // Append the new car info div to the car inputs container
+            carInputsContainer.appendChild(newCarDiv);
+
+            // Increment the car count
+            carCount++;
+        });
 
         // Image Preview
         document.getElementById('image').addEventListener('change', function(event) {

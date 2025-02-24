@@ -30,6 +30,11 @@ class ProductController extends Controller
             'Description' => 'nullable|string',
             'Price' => 'required|numeric',
             'Inventory' => 'required|integer',
+            // 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            // 'color'=>'required|string|max:255',
+            // 'width'=>'required|string|max:255',
+            // 'weight'=>'required|string|max:255',
+            // 'height'=>'required|string|max:255',
         ]);
 
         // Sanitize input
@@ -76,10 +81,27 @@ class ProductController extends Controller
             'Description' => 'nullable|string',
             'Price' => 'required|numeric',
             'Inventory' => 'required|integer',
+            // 'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            // 'color'=>'required|string|max:255',
+            // 'width'=>'required|string|max:255',
+            // 'weight'=>'required|string|max:255',
+            // 'height'=>'required|string|max:255',
+
+        //     $imagePath = null;
+
+        // // Check if a file is uploaded
+        // if ($request->hasFile('image')) {
+        //     $file = $request->file('image');
+        //     $file_name = time() . $file->getClientOriginalName();
+        //     $file->move(public_path('upload'), $file_name);
+        //     $imagePath = $file_name; // Set the image path
+        // }
+
         ]);
 
         // Sanitize input
         $product->update([
+            // 'image' => strip_tags($request->input('image')),
             'ProductName' => strip_tags($request->input('ProductName')),
             'Description' => strip_tags($request->input('Description')),
             'Price' => strip_tags($request->input('Price')),

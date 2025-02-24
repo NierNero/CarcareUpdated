@@ -36,11 +36,16 @@ Route::prefix('admin')->middleware('guest:admin')->group(function () {
                 ->name('password.store');
 });
 
+Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+});
+
+
 Route::prefix('admin')->middleware('auth:admin')->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    // Route::get('/dashboard', function () {
+    //     return view('admin.dashboard');
+    // })->name('admin.dashboard');
 
     Route::get('verify-email', EmailVerificationPromptController1::class)
                 ->name('verification.notice');
@@ -76,6 +81,9 @@ Route::get('/admin/adminreport', function () {
 
 // Routes for dashboard and deleting users and mechanics
 Route::get('/admin/dashboard', [AdminController::class, 'showUsers'])->name('admin.dashboard');
+
+Route::get('/admin/indexuser', [AdminController::class, 'indexUser'])->name('admin.indexuser');
+
 
 
 // Routes to view user and mechanic details

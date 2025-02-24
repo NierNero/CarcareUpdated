@@ -79,6 +79,9 @@ Route::post('/cart/add/{product}', [CartController::class, 'store'])->name('cart
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::delete('/cart/remove/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
 
+Route::patch('cart/{cart}/decrement', [CartController::class, 'decrement'])->name('cart.decrement');
+Route::patch('cart/{cart}/increment', [CartController::class, 'increment'])->name('cart.increment');
+
 Route::middleware('auth')->group(function () {
     Route::resource('orders', OrderController::class);
     Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');

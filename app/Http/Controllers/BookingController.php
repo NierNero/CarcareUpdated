@@ -14,7 +14,7 @@ class BookingController extends Controller
         // Retrieve all pending orders from all users
         $orders = auth()->user()->orders()->with('items.product')->get();
 
-        return view('mechanic.booking.bookingdashboard', compact('allPendingOrders'));
+        return view('mechanic.orders', compact('allPendingOrders'));
     }
 
     // Accept a pending order

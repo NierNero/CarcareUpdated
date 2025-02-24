@@ -105,161 +105,139 @@
         }
     </style>
 
-    <div id="layout">
-        <div class="info-head">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <ul class="visible-md visible-lg text-left">
-                            <li><a href="tel:+911234567890"><i class="fa fa-phone"></i> +91-1234567890</a></li>
-                            <li><a href="mailto:contact@surfsidemedia.in"><i class="fa fa-envelope"></i>
-                                    contact@carcaremedia.in</a></li>
-                        </ul>
-                        <ul class="visible-xs visible-sm">
-                            <li class="text-left"><a href="tel:+911234567890"><i class="fa fa-phone"></i>
-                                    +91-1234567890</a></li>
-                            <li class="text-right"><a href="index.php/changelocation.html"><i
-                                        class="fa fa-map-marker"></i> University of High Blood</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-6">
-                        <ul class="visible-md visible-lg text-right">
-                            <li><i class="fa fa-comment"></i> Live Chat</li>
-                            <li><a href="index.php/changelocation.html"><i class="fa fa-map-marker"></i> University of
-                                    High Blood</a></li>
-                        </ul>
-                    </div>
+<div id="layout">
+    <div class="info-head">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="visible-md visible-lg text-left">
+                        <li><a href="tel:+911234567890"><i class="fa fa-phone"></i> +91-1234567890</a></li>
+                        <li><a href="mailto:contact@carcaremedia.in"><i class="fa fa-envelope"></i> contact@carcaremedia.in</a></li>
+                    </ul>
+                    <ul class="visible-xs visible-sm">
+                        <li class="text-left"><a href="tel:+911234567890"><i class="fa fa-phone"></i> +91-1234567890</a></li>
+                        <li class="text-right"><a href="index.php/changelocation.html"><i class="fa fa-map-marker"></i> University of High Blood</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="visible-md visible-lg text-right">
+                        <li><i class="fa fa-comment"></i> Live Chat</li>
+                        <li><a href="index.php/changelocation.html"><i class="fa fa-map-marker"></i> University of High Blood</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <header id="header" class="header-v3">
-            <nav class="flat-mega-menu">
-                <label for="mobile-button"> <i class="fa fa-bars"></i></label>
-                <input id="mobile-button" type="checkbox">
+    </div>
 
-                <ul class="collapse">
-                    <li class="title">
-                        <a href="index.php.html"><img src="{{ ('images/carcare.jpg') }}"></a>
-                    </li>
-                    <!--<li> <a href="">My Cart/Booking</a>
-                        <ul class="drop-down one-column hover-fade">
-                            {{-- <li><a href="{{ route('cart') }}">Cart</a></li>
-                            <li><a href="{{ route('booking') }}">Booking</a></li> --}}
-                        </ul>-->
-                    </li>
-
-                    <li> <a href="{{ route('dashboard') }}">Home</a>
-                    </li>
-
-                    <li> <a href="{{ route('user.services', $mechanic->id) }}">Service</a>
-                    </li>
-
-                    </li>
-                    <li> <a href="{{ Auth::user()->name }}">My Account</a>
-                        <ul class="drop-down one-column hover-fade">
-                            <li><a href="{{ route('profile.edit') }}">Profile</a></li>
-                            <li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    <a href="route('logout')" onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                                        {{ __('Log Out') }}
-                                    </a>
-                                    @csrf
-                            </li>
-                        </ul>
-
-
-
-                    </li>
-
-                </ul>
-            </nav>
-        </header>
-
-        <div class="content_info content_resalt">
-            <div class="container" style="margin-top: 30px;">
-        </div>
-            </div>
-
-        <div class="container">
-            <h2 class="text-center">Products</h2>
-            <div class="product-grid">
-                @foreach($products as $product)
-                    <div class="product-card">
-                        <img src="{{ asset('images/products/' . $product->image) }}" alt="{{ $product->ProductName }}">
-                        <div class="details">
-                            <h5>{{ $product->ProductName }}</h5>
-                            <p class="text-danger">₱{{ number_format($product->Price, 2) }}</p>
-                            <form action="{{ route('cart.add', $product->id) }}" method="POST">
+    <header id="header" class="header-v3">
+        <nav class="flat-mega-menu">
+            <label for="mobile-button"><i class="fa fa-bars"></i></label>
+            <input id="mobile-button" type="checkbox">
+            <ul class="collapse">
+                <li class="title">
+                    <a href="index.php"><img src="{{ asset('images/carcare.jpg') }}" alt="Carcare Logo"></a>
+                </li>
+                
+                <li><a href="{{ route('dashboard') }}">Home</a></li>
+                <li><a href="{{ route('user.services', $mechanic->id) }}">Service</a></li>
+                <li>
+                    <a href=""{{ Auth::user()->name }}>My Account</a>
+                    <ul class="drop-down one-column hover-fade">
+                        <li><a href="{{ route('profile.edit') }}">Profile</a></li>
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <input type="hidden" name="mechanic_id" value="{{ $mechanic->id }}">
-                                <button type="submit" class="btn btn-success mt-3">🛒 Add to Cart</button>
+                                <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                </a>
                             </form>
-                            
-                            {{-- <form action="{{ route('user.cart', $product->id) }}" method="Get">                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <input type="hidden" name="mechanic_id" value="{{ $mechanic->id }}">
-                                {{-- <label for="quantity">Quantity:</label>
-                                <input type="number" name="quantity" value="1" min="1" required> --}}
-                                {{-- <a href="{{ route('user.cart', parameters: ['id' => $product->mechanic_id]) }}" class="btn btn-success mt-3">🛒 Add to Cart</a> --}}
-                            {{-- </form> --}}
-                        </div>
-                    </div>
-                @endforeach
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
+    <div class="content_info content_resalt">
+        <div class="container" style="margin-top: 30px;">
+            <!-- Additional content can go here -->
         </div>
-        <div id="chat-button">
-            <a href="#" onclick="openChat()" class="chat-icon">
-                <i class="fa fa-comment"></i>
-            </a>
-        </div>
-    
-        <script>
-            // JavaScript to trigger chat window (Example)
-            function openChat() {
-                alert("Chat feature coming soon!");
-                // You can replace this with your chat window integration
-            }
-        </script>
-    <script type="text/javascript" src="{{ asset('assets/js/nav/jquery.sticky.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/totop/jquery.ui.totop.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/accordion/accordion.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>
-    <script type="text/javascript"
-        src="{{ asset('assets/js/rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/maps/gmap3.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/fancybox/jquery.fancybox.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/carousel/carousel.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/filters/jquery.isotope.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/twitter/jquery.tweet.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/flickr/jflickrfeed.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/theme-options/theme-options.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/theme-options/jquery.cookies.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/bootstrap/bootstrap-slider.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/dtb/jquery.dataTables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/dtb/jquery.table2excel.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/dtb/script.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/select2.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/validation-rule.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/bootstrap3-typeahead.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/main.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
-    <script type="text/javascript">
-        jQuery(Secret).ready(function () {
-            jQuery('.tp-banner').show().revolution({
-                dottedOverlay: "none",
-                delay: 5000,
-                startwidth: 1170,
-                startheight: 480,
-                minHeight: 250,
-                navigationType: "none",
-                navigationArrows: "solo",
-                navigationStyle: "preview1"
-            });
+    </div>
+
+    <div class="container">
+        <h2 class="text-center">Products</h2>
+        <div class="product-grid">
+            @foreach($products as $product)
+                <div class="product-card">
+                    <img src="{{ asset('images/products/' . $product->image) }}" alt="{{ $product->ProductName }}">
+                    <div class="details">
+                        <h5>{{ $product->ProductName }}</h5>
+                        <p class="text-danger">₱{{ number_format($product->Price, 2) }}</p>
+                        <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <input type="hidden" name="mechanic_id" value="{{ $mechanic->id }}">
+                            <button type="submit" class="btn btn-success mt-3">🛒 Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            @endforeach
+        </div> <!-- End of product-grid -->
+    </div> <!-- End of container -->
+
+    <div id="chat-button">
+        <a href="#" onclick="openChat()" class="chat-icon">
+            <i class="fa fa-comment"></i>
+        </a>
+    </div>
+</div> <!-- End of layout -->
+
+<script>
+    // JavaScript to trigger chat window (Example)
+    function openChat() {
+        alert("Chat feature coming soon!");
+        // You can replace this with your chat window integration
+    }
+</script>
+
+<script type="text/javascript" src="{{ asset('assets/js/nav/jquery.sticky.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/totop/jquery.ui.totop.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/accordion/accordion.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/maps/gmap3.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/fancybox/jquery.fancybox.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/carousel/carousel.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/filters/jquery.isotope.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/twitter/jquery.tweet.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/flickr/jflickrfeed.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/theme-options/theme-options.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/theme-options/jquery.cookies.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/bootstrap/bootstrap-slider.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/dtb/jquery.dataTables.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/dtb/jquery.table2excel.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/dtb/script.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/select2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/jquery.validate.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/validation-rule.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/bootstrap3-typeahead.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/main.js') }}"></script>
+<!-- Removed duplicate jQuery include to avoid conflicts -->
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.tp-banner').show().revolution({
+            dottedOverlay: "none",
+            delay: 5000,
+            startwidth: 1170,
+            startheight: 480,
+            minHeight: 250,
+            navigationType: "none",
+            navigationArrows: "solo",
+            navigationStyle: "preview1"
         });
-    </script>
+    });
+</script>
 </body>
 
 </html>

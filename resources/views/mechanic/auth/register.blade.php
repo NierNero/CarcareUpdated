@@ -180,7 +180,7 @@
             <h2>Register Steps</h2>
             <div class="step">
                 <img src="https://via.placeholder.com/150x100" alt="Illustration 1">
-                <p>Register with us, enter your details, and click “Register Button.”</p>
+                <p>Register with us, enter your details, and click the “Register” button.</p>
             </div>
             <div class="step">
                 <img src="https://via.placeholder.com/150x100" alt="Illustration 2">
@@ -321,28 +321,17 @@
     </div><!-- .container -->
     
     <script>
-        // Dynamic Car Inputs
-        document.getElementById('add-car').addEventListener('click', function() {
-            let container = document.getElementById('car-inputs');
-            let index = container.getElementsByClassName('car-info').length;
-            let div = document.createElement('div');
-            div.classList.add('car-info');
-            div.innerHTML = `
-                <label for="car_type_${index}">Car Type</label>
-                <input id="car_type_${index}" type="text" name="car_type[]" required>
-                <label for="car_model_${index}">Car Model</label>
-                <input id="car_model_${index}" type="text" name="car_model[]" required>
-            `;
-            container.appendChild(div);
-        });
-
         // Image Preview after file selection
         document.getElementById('image').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
                 const preview = document.getElementById('image-preview');
                 preview.src = URL.createObjectURL(file);
-                preview.style.display = 'block';
+                preview.style.display = 'block'; // Show the preview
+            } else {
+                const preview = document.getElementById('image-preview');
+                preview.src = '';
+                preview.style.display = 'none'; // Hide the preview
             }
         });
     </script>

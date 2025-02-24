@@ -36,10 +36,6 @@ body {
     transition: all 0.3s ease;
 }
 
-.sidebar a:hover {
-    background-color: #45a049;
-    padding-left: 25px;
-}
 
 /* Sidebar toggle for small screens */
 .sidebar.hidden {
@@ -103,9 +99,7 @@ hr {
 }
 
 /* Table Styling */
-.table-container {
-    overflow-x: auto;
-}
+
 
 table {
     width: 100%;
@@ -121,11 +115,7 @@ td {
     border: 1px solid #ddd;
 }
 
-th {
-    background-color: #4CAF50;
-    color: white;
-    font-size: 16px;
-}
+
 
 tr:nth-child(odd) {
     background-color: #f9f9f9;
@@ -276,9 +266,7 @@ tr:hover {
     transition: background-color 0.3s ease;
 }
 
-.dropdown:hover .dropdown-toggle {
-    background-color: #45a049;
-}
+
 
 .dropdown-menu {
     display: none;

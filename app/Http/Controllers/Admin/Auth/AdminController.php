@@ -12,10 +12,17 @@ class AdminController extends Controller
 {
     public function showUsers()
     {
-        $users = User::all();
+        
         $mechanics = Mechanic::all();
 
-        return view('admin.dashboard', compact('users', 'mechanics'));
+        return view('admin.dashboard', compact( 'mechanics'));
+    }
+
+    public function indexUser()
+    {
+        $users = User::all();
+        return view('admin.indexuser', compact('users'));
+
     }
 
     public function destroy($id)
@@ -48,4 +55,6 @@ class AdminController extends Controller
         $mechanic = Mechanic::findOrFail($id);
         return view('admin.view-mechanic', compact('mechanic'));
     }
+
+    
 }

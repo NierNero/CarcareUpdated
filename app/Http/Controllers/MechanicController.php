@@ -13,7 +13,10 @@ class MechanicController extends Controller
     // Existing methods for managing mechanics
     public function index()
     {
-        $mechanics = Mechanic::all(); // Fetch all mechanics
+        // Retrieve the authenticated mechanic (ensure you're using the correct guard if needed)
+        $mechanic = Auth::guard('mechanic')->user(); 
+        // If you need a list of mechanics for some purpose:
+        $mechanics = Mechanic::all();
         return view('mechanic.dashboard', compact('mechanics'));
     }
 

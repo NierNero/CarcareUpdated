@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('mechanic_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('status')->default('pending'); // pending, in_transit, completed
             $table->decimal('total_amount', 8, 2);
             $table->string('payment_method')->nullable(); // Add payment_method column

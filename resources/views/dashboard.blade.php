@@ -69,6 +69,8 @@
 </head>
 
 <body>
+
+  
   <div id="">
     <!-- Header / Navigation -->
     <header id="header" class="header-v3">
@@ -76,16 +78,17 @@
         <label for="mobile-button"><i class="fa fa-bars"></i></label>
         <input id="mobile-button" type="checkbox">
         <ul class="collapse">
-          <li class="title">
+          <li class="title" style="margin-top: 10px">
             <a href="index.php.html"><img src="{{ ('images/carcare.jpg') }}" alt="Carcare Logo"></a>
           </li>
           <li>
-            <a href="">My Cart</a>
+            <a href="" style="margin-top: 8px; margin-right: 20px;">My Orders</a>
             <ul class="drop-down one-column hover-fade">
               <li><a href="{{ route('cart.index') }}">Cart</a></li>
+              <li><a href="{{ route('orders.index') }}">My Orders</a></li>
             </ul>
           </li>
-          <li>
+          <li style="margin-right: 100px;">
             <a href="" {{ Auth::user()->name }}>My Account</a>
             <ul class="drop-down one-column hover-fade">
               <li><a href="{{ route('profile.edit') }}">Profile</a></li>
@@ -106,21 +109,6 @@
     <!-- Banner Section -->
     <section class="tp-banner-container">
       <div class="tp-banner">
-        <ul>
-          <li data-transition="slidevertical" data-slotamount="1" data-masterspeed="1000"
-              data-saveperformance="off" data-title="Slide">
-            <img src="{{ ('assets/img/slide/mechanic1.jpeg') }}" alt="Slide 1"
-                 data-bgposition="center center" data-kenburns="on" data-duration="6000"
-                 data-ease="Linear.easeNone" data-bgfit="130" data-bgfitend="100"
-                 data-bgpositionend="right center">
-          </li>
-          <li data-transition="slidehorizontal" data-slotamount="1" data-masterspeed="1000"
-              data-saveperformance="off" data-title="Slide">
-            <img src="{{ ('assets/img/slide/car1.jpg') }}" alt="Slide 2" data-bgposition="top center"
-                 data-kenburns="on" data-duration="6000" data-ease="Linear.easeNone" data-bgfit="130"
-                 data-bgfitend="100" data-bgpositionend="right center">
-          </li>
-        </ul>
         <div class="tp-bannertimer"></div>
       </div>
       <div class="filter-title">
@@ -133,7 +121,6 @@
           <form id="searchForm" onsubmit="return false;">
             <div class="search-wrapper">
               <input type="text" name="q" id="searchMechanic" placeholder="Search for a shop name..." class="search-input" autocomplete="off">
-              <button type="button" id="searchButton" class="search-button">Search</button>
             </div>
           </form>
         </div>
@@ -152,49 +139,53 @@
             </div>
           </div>
           <!-- Shop Cards Container -->
-          <div class="container" style="margin-top: -50px; padding: 20px;">
+           <div class="container">  {{--style="margin-top: 10px;" --}}
             <div class="row">
               @if(isset($mechanics) && $mechanics->count())
-                @foreach ($mechanics as $mechanic)
-                  <!-- Each shop card has the class "hsgrids" and a data-shopname attribute -->
-                  <div class="col-xs-6 col-sm-4 col-md-3 hsgrids" data-shopname="{{ $mechanic->shopname }}" style="padding: 10px; display: flex; justify-content: center;">
-                    <div class="info-gallery" style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s ease, transform 0.3s ease; width: 260px; height: 340px; max-width: 100%;">
-                      <div class="showPhoto"
-                           style="background-image: url('{{ $mechanic->image ? asset('upload/' . $mechanic->image) : asset('img/avatar.png') }}');
-                                  background-size: cover;
-                                  background-position: center;
-                                  background-repeat: no-repeat;
-                                  width: 100%;
-                                  height: 250px;
-                                  position: relative;
-                                  overflow: hidden;
-                                  border-top-left-radius: 12px;
-                                  border-top-right-radius: 12px;
-                                  transition: transform 0.3s ease, box-shadow 0.3s ease;"
-                           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0, 0, 0, 0.2)'; this.querySelector('.overlay').style.opacity='1';"
-                           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0, 0, 0, 0.1)'; this.querySelector('.overlay').style.opacity='0';">
-                        <!-- Overlay Effect -->
-                        <div class="overlay"
-                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-                                    background: rgba(0, 0, 0, 0.4); display: flex; justify-content: center;
-                                    align-items: center; opacity: 0; transition: opacity 0.3s ease;">
-                          <a href="{{ route('user.services', $mechanic->id) }}"
-                             class="btn btn-primary"
-                             style="padding: 10px 20px; background-color: #ff7f50; border: none;
-                                    color: white; border-radius: 8px; text-decoration: none;">
-                            View Shop
-                          </a>
+                @foreach($mechanics as $mechanic)
+                  <!-- Each card column with data-shopname attribute for filtering -->
+                  <div class="col-xs-12 col-sm-6 col-md-3" style="margin-bottom: 20px;" data-shopname="{{ $mechanic->shopname }}">
+                    <div class="card" style="border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;">
+                      <!-- Top Image -->
+                      <div style="background-image: url('{{ $mechanic->image ? asset('upload/' . $mechanic->image) : asset('img/avatar.png') }}'); background-size: cover; background-position: center; height: 180px;"></div>
+          
+                      <!-- Card Body -->
+                      <div class="card-body text-center" style="padding: 15px;">
+                        <!-- Shop Name with icon -->
+                        <h5 style="font-weight: bold; color: #333; margin-bottom: 5px;">
+                          <i class="fa fa-wrench" style="margin-right: 6px;"></i>
+                          {{ $mechanic->shopname }}
+                        </h5>
+          
+                        <!-- Location with icon -->
+                        <p style="color: #777; margin-bottom: 10px;">
+                          <i class="fa fa-map-marker" style="margin-right: 6px;"></i>
+                          {{ $mechanic->Address }}
+                        </p>
+          
+                        <!-- Rating Section with icons -->
+                        <div style="margin-bottom: 10px;">
+                          <i class="fa fa-star" style="color: #FFD700;"></i>
+                          <i class="fa fa-star" style="color: #FFD700;"></i>
+                          <i class="fa fa-star" style="color: #FFD700;"></i>
+                          <i class="fa fa-star" style="color: #FFD700;"></i>
+                          <i class="fa fa-star" style="color: #ccc;"></i>
+                          <span style="color: #777; font-size: 14px;">(4 Ratings)</span>
                         </div>
-                      </div>
-                      <div class="shop-name"
-                           style="padding: 15px; text-align: center; font-weight: bold; font-size: 18px; color: #333;">
-                        <span>{{ $mechanic->shopname }}</span>
+          
+                        <!-- Buttons -->
+                        <div>
+                          <a href="{{ route('user.services', $mechanic->id) }}" class="btn btn-primary" style="background-color: #ff7f50; border: none; margin-right: 5px;">Visit Now</a>
+                          <a href="{{ route('user.product', $mechanic->id) }}" class="btn btn-primary" style="background-color: #333; border: none;">Shop</a>
+                        </div>
                       </div>
                     </div>
                   </div>
                 @endforeach
               @else
-                <p style="text-align: center; font-size: 16px; color: #777;">No mechanics available.</p>
+                <p class="text-center" style="font-size: 16px; color: #777;">
+                  No mechanics available.
+                </p>
               @endif
             </div>
           </div>
@@ -241,14 +232,14 @@
       });
     });
 
-    // Function to filter shops by shopname
+    // Updated search function filtering based on the data-shopname attribute
     function filterShops() {
-      var input = document.getElementById("searchMechanic").value.toLowerCase();
-      var shopCards = document.querySelectorAll(".hsgrids");
+      var input = document.getElementById("searchMechanic").value.toLowerCase().trim();
+      var shopCards = document.querySelectorAll(".col-xs-12.col-sm-6.col-md-3[data-shopname]");
+      
       shopCards.forEach(function(card) {
-        // Try to get the shop name from the data attribute; if not available, use inner text.
-        var shopName = card.getAttribute("data-shopname") || card.querySelector(".shop-name span").textContent;
-        if (shopName.toLowerCase().indexOf(input) > -1) {
+        var shopName = card.getAttribute("data-shopname").toLowerCase();
+        if (shopName.indexOf(input) !== -1) {
           card.style.display = "";
         } else {
           card.style.display = "none";
@@ -256,7 +247,7 @@
       });
     }
 
-    // Attach event listeners to the search input and button
+    // Attach event listeners for real-time filtering
     document.getElementById("searchMechanic").addEventListener("keyup", filterShops);
     document.getElementById("searchButton").addEventListener("click", filterShops);
   </script>

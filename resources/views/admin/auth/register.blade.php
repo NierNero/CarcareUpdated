@@ -232,7 +232,7 @@
                     </div>
 
                     <div class="button-row">
-                        @if (Route::has('admin.register'))
+                        @if (Route::has('admin.login'))
                         <a class="btn-cancel" href="{{ route('admin.login') }}">
                             {{ __('Cancel') }}
                         </a>

@@ -97,10 +97,10 @@ Route::prefix('mechanic')->middleware('auth:mechanic')->group(function () {
      
 });
 
-Route::get('/mechanic/order', function () {
-    return view('mechanic.order');
+Route::get('/mechanic/orders', function () {
+    return view('mechanic.orders');
         
-})->name('order');
+})->name('orders');
     
 Route::get('/mechanic/report', function () {
         return view('mechanic.auth.report');
@@ -160,7 +160,7 @@ Route::middleware('auth:mechanic')->group(function () {
     Route::get('/mechanic/orders', [MechanicController::class, 'orders'])->name('mechanic.orders');
     Route::get('/mechanic/orders/{order}', [MechanicController::class, 'showOrder'])->name('mechanic.orders.show');
     Route::post('/mechanic/orders/{order}/update-status', [MechanicController::class, 'updateOrderStatus'])->name('mechanic.orders.updateStatus');
-    Route::get('/mechanic', [MechanicController::class, 'index'])->name('mechanic.index');
+    // Route::get('/mechanic', [MechanicController::class, 'index'])->name('mechanic.index');
 
 });
 

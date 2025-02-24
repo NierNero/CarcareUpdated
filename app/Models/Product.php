@@ -18,7 +18,12 @@ class Product extends Authenticatable
         'Price',
         'Inventory',
         'mechanic_id', // Add mechanic_id to the fillable array
-        'user_id'
+        'user_id',
+        'image',
+        'color',
+        'width',
+        'weight',
+        'height',
     ];
 
      // A product belongs to a user

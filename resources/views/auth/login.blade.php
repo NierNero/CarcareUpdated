@@ -37,36 +37,39 @@
             inset: 0; /* stretches overlay to all edges */
             background-color: rgba(0,0,0,0.4);
         }
-        .left-panel-content {
-            position: relative;
-            color: #fff;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
-            text-align: center;
-        }
-        .left-panel-content h1 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        .left-panel-content p {
-            font-size: 1rem;
-            max-width: 300px;
-            line-height: 1.4;
-        }
+        .left-panel {
+      flex: 1;
+      background-color: #0C2E5B;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .left-panel img {
+      max-width: 200px;
+      margin-bottom: 20px;
+    }
+    .left-panel h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    .left-panel p {
+      font-size: 1rem;
+      line-height: 1.4;
+      max-width: 250px;
+    }
 
         /* Right panel: the login form in a card */
         .right-panel {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #fff;
-            padding: 20px;
-        }
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
 
         /* Card container for the form */
         .card {
@@ -159,7 +162,50 @@
                 flex: none;
                 min-height: 300px;
             }
+            .left-panel {
+        padding: 20px 20px;
+      }
         }
+
+        /* Card-like wrapper for the login form */
+    .form-wrapper {
+      background-color: #fff;
+      width: 100%;
+      max-width: 400px;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* Heading */
+    .form-wrapper h3 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    .form-wrapper label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .form-wrapper input[type="email"],
+    .form-wrapper input[type="password"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      outline: none;
+      transition: border-color 0.2s ease-in-out;
+    }
+    .form-wrapper input[type="email"]:focus,
+    .form-wrapper input[type="password"]:focus {
+      border-color: #646cff; /* Accent color */
+    }
     </style>
 </head>
 <body>
@@ -175,8 +221,8 @@
 
         <!-- RIGHT PANEL: Card with Login Form -->
         <div class="right-panel">
-            <div class="card">
-                <h2>Log In</h2>
+            <div class="form-wrapper">
+                <h3>Log In</h3>
 
                 <!-- Session Status (Laravel Blade) -->
                 <x-auth-session-status class="mb-4 status-message" :status="session('status')" />

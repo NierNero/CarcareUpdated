@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
@@ -22,18 +22,14 @@
             align-items: center;
         }
 
-        .navbar .navbar-links {
-            display: flex;
-        }
-
         .navbar a {
             color: white;
             text-decoration: none;
             margin: 0 15px;
             font-weight: bold;
-            padding: 7px 15px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
+            transition: 0.3s;
+            padding: 10px 15px;
+            border-radius: 5px;
         }
 
         .navbar a:hover {
@@ -41,11 +37,11 @@
         }
 
         .header {
-            background-color: #fff;
+            background-color: white;
             padding: 20px;
             text-align: center;
             border-bottom: 1px solid #ddd;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .header h1 {
@@ -87,9 +83,10 @@
         }
 
         th, td {
-            text-align: left;
             padding: 15px;
+            text-align: left;
             border-bottom: 1px solid #ddd;
+            font-size: 14px;
         }
 
         th {
@@ -108,8 +105,8 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 14px;
             transition: background-color 0.3s;
+            font-size: 14px;
         }
 
         .actions button:hover {
@@ -119,11 +116,24 @@
         /* Responsive Design */
         @media (max-width: 768px) {
             .search-container input {
-                width: 70%;
+                width: 80%;
             }
 
             table {
-                font-size: 14px;
+                font-size: 12px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar a {
+                margin: 5px 0;
             }
         }
 
@@ -135,35 +145,17 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-        }
-
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .navbar .navbar-links {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .navbar a {
-                margin: 5px 0;
-            }
-
-            .header h1 {
-                font-size: 24px;
-            }
+            margin: auto;
         }
     </style>
 </head>
+
 <body>
     <!-- Navbar -->
     <div class="navbar">
-        <div class="navbar-links">
-            <a href="{{ route('admin.indexuser') }}">User</a>
-            <a href="#">Shop Request</a>
+        <div>
+            <a href="{{ route('admin.dashboard') }}">Mechanic</a>
+            <a href="">Shop Request</a>
             <a href="{{ route('adminreport') }}">Report</a>
         </div>
         <div>
@@ -178,7 +170,7 @@
 
     <!-- Header -->
     <div class="header">
-        <h1>Admin Dashboard - Mechanic Accounts</h1>
+        <h1>Admin Dashboard - User Accounts</h1>
     </div>
 
     <!-- Search Bar -->
@@ -193,7 +185,6 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Shop Name</th>
                     <th>Contact No</th>
                     <th>Address</th>
                     <th>Email</th>
@@ -204,25 +195,24 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Mechanics -->
-                @foreach ($mechanics as $mechanic)
-                    <tr onclick="redirectToView('{{ route('admin.mechanic.view', $mechanic->id) }}')">
-                        <td>{{ $mechanic->id }}</td>
-                        <td>{{ $mechanic->name }}</td>
-                        <td>{{ $mechanic->shopname }}</td>
-                        <td>{{ $mechanic->ContactNo }}</td>
-                        <td>{{ $mechanic->Address }}</td>
-                        <td>{{ $mechanic->email }}</td>
-                        <td>{{ $mechanic->created_at }}</td>
-                        <td>{{ $mechanic->updated_at }}</td>
+                <!-- Users -->
+                @foreach ($users as $user)
+                    <tr onclick="redirectToView('{{ route('admin.user.view', $user->id) }}')">
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user->first_name }} {{ $user->last_name }}</td>
+                        <td>{{ $user->phone_number }}</td>
+                        <td>{{ $user->address }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->created_at }}</td>
+                        <td>{{ $user->updated_at }}</td>
                         <td>
-                            <div class="showPhoto" style="background-image:url('{{ $mechanic->image ? asset('upload/' . $mechanic->image) : asset('img/avatar.png') }}');"></div>
+                            <div class="showPhoto" style="background-image:url('{{ $user->image ? asset('upload/' . $user->image) : asset('img/avatar.png') }}');"></div>
                         </td>
                         <td class="actions">
-                            <form action="{{ route('admin.mechanic.destroy', $mechanic->id) }}" method="POST" style="display: inline;">
+                            <form action="{{ route('admin.user.destroy', $user->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" title="Delete Mechanic"><i class="fas fa-trash-alt"></i></button>
+                                <button type="submit" title="Delete User"><i class="fas fa-trash-alt"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -245,12 +235,12 @@
             for (var i = 1; i < trs.length; i++) {
                 var td = trs[i].getElementsByTagName("td");
                 var match = false;
+
                 for (var j = 0; j < td.length; j++) {
                     if (td[j]) {
                         var txtValue = td[j].textContent || td[j].innerText;
                         if (txtValue.toLowerCase().indexOf(filter) > -1) {
                             match = true;
-                            break; // No need to check further in this row
                         }
                     }
                 }

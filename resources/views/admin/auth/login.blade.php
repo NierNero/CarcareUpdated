@@ -52,13 +52,12 @@
 
         /* Right panel: white background for the admin login form */
         .right-panel {
-            flex: 1;
-            background-color: #fff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 40px;
-        }
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
         .right-panel .form-container {
             max-width: 400px; /* Limit form width */
             margin: 0 auto;
@@ -141,6 +140,43 @@
                 min-height: 200px;
             }
         }
+
+        .form-wrapper {
+      background-color: #fff;
+      width: 100%;
+      max-width: 400px;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+        .form-wrapper h3 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    .form-wrapper label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .form-wrapper input[type="email"],
+    .form-wrapper input[type="password"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      outline: none;
+      transition: border-color 0.2s ease-in-out;
+    }
+    .form-wrapper input[type="email"]:focus,
+    .form-wrapper input[type="password"]:focus {
+      border-color: #646cff; /* Accent color */
+    }
     </style>
 </head>
 <body>
@@ -155,7 +191,7 @@
 
         <!-- RIGHT PANEL: Admin Login Form -->
         <div class="right-panel">
-            <div class="form-container">
+            <div class="form-wrapper">
                 <!-- Session Status -->
                 <x-auth-session-status class="mb-4" :status="session('status')" />
 
