@@ -114,12 +114,26 @@
       flex: 1;
       text-align: left;
     }
+    .col.image-col {
+      flex: 0 0 60px;
+    }
     .col.product-name {
       flex: 2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
     .col.actions {
       flex: 1.5;
       text-align: center;
+    }
+    /* Circular Image Styling */
+    .product-img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid #ddd;
     }
     /* Action Buttons with Icons */
     .view-btn, .edit-btn, .delete-btn {
@@ -213,6 +227,7 @@
       <div class="product-grid">
         <!-- Header Row -->
         <div class="product-header">
+          <div class="col image-col">Image</div>
           <div class="col product-name">Product Name</div>
           <div class="col">Description</div>
           <div class="col">Price</div>
@@ -222,6 +237,13 @@
         <!-- Product Rows -->
         @foreach ($products as $product)
           <div class="product-row" onclick="window.location.href='{{ route('mechanic.show', $product->id) }}'">
+            <div class="col image-col">
+              @if($product->image)
+                <img src="{{ asset('upload/' . $product->image) }}" alt="Product Image" class="product-img">
+              @else
+                <img src="{{ asset('images/no-image.png') }}" alt="No Image" class="product-img">
+              @endif
+            </div>
             <div class="col product-name">{{ $product->ProductName }}</div>
             <div class="col">{{ $product->Description }}</div>
             <div class="col">${{ number_format($product->Price, 2) }}</div>
@@ -241,7 +263,6 @@
           </div>
         @endforeach
       </div>
-      <a href="{{ route('mechanic.dashboard') }}" class="back-link">Back</a>
     </div>
   </div>
   

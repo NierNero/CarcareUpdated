@@ -46,6 +46,12 @@
     .product-details strong {
       color: #007BFF;
     }
+    /* Product Image */
+    .product-image {
+      max-width: 100%;
+      margin: 20px 0;
+      display: block;
+    }
     /* Go Back Button */
     .go-back-btn {
       display: inline-block;
@@ -93,6 +99,13 @@
       <p><strong>Description:</strong> {{ $product->Description }}</p>
       <p><strong>Price:</strong> ${{ number_format($product->Price, 2) }}</p>
       <p><strong>Inventory:</strong> {{ $product->Inventory }}</p>
+      <p><strong>Color:</strong> {{ $product->color }}</p>
+      <p><strong>Width:</strong> {{ $product->width }}</p>
+      <p><strong>Weight:</strong> {{ $product->weight }}</p>
+      <p><strong>Height:</strong> {{ $product->height }}</p>
+      @if($product->image)
+        <img src="{{ asset('upload/'.$product->image) }}" alt="{{ $product->ProductName }}" class="product-image">
+      @endif
     </div>
     <a href="{{ route('mechanic.productdashboard') }}" class="go-back-btn">Back to Dashboard</a>
   </div>

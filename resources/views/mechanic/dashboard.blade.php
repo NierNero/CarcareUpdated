@@ -250,7 +250,6 @@
           </div>
         @endforeach
       </div>
-      <a href="{{ route('mechanic.dashboard') }}" class="back-link">Back</a>
     </div>
   </div>
   

@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PaymentController;
 
 
 
@@ -89,6 +91,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
     
 });
+
+Route::get('/product-view/{id}', [ProductController::class, 'shows'])->name('product-view');
+Route::post('/cart/{id}/add', [CartController::class, 'add'])->name('cart.add');
+Route::get('/payments/{id}', [PaymentController::class, 'index'])->name('payments.index');
+
 
 Route::get('/user/pending', [OrderController::class, 'pendingOrders'])->name('user.pending');
     Route::get('/user/in-transit', [OrderController::class, 'inTransitOrders'])->name('user.in_transit');

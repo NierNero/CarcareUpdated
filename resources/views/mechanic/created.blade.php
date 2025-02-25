@@ -112,6 +112,14 @@
       background-color: #007BFF;
       color: #fff;
     }
+    /* Preview Image */
+    #imagePreview {
+      display: none;
+      max-width: 100%;
+      margin-top: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
     /* Responsive Styles */
     @media (max-width: 600px) {
       header {
@@ -147,7 +155,7 @@
   @endif
   
   <div class="container">
-    <form action="{{ route('mechanic.store') }}" method="POST">
+    <form action="{{ route('mechanic.store') }}" method="POST" enctype="multipart/form-data">
       @csrf
       <div class="form-group">
         <label for="ProductName">Product Name:</label>
@@ -165,12 +173,50 @@
         <label for="Inventory">Inventory:</label>
         <input type="number" id="Inventory" name="Inventory" required>
       </div>
+      <div class="form-group">
+        <label for="color">Color:</label>
+        <input type="text" id="color" name="color">
+      </div>
+      <div class="form-group">
+        <label for="width">Width:</label>
+        <input type="text" id="width" name="width">
+      </div>
+      <div class="form-group">
+        <label for="weight">Weight:</label>
+        <input type="text" id="weight" name="weight">
+      </div>
+      <div class="form-group">
+        <label for="height">Height:</label>
+        <input type="text" id="height" name="height">
+      </div>
+      <div class="form-group">
+        <label for="image">Product Image:</label>
+        <input type="file" id="image" name="image">
+        <!-- Image preview container -->
+        <img id="imagePreview" src="#" alt="Image Preview">
+      </div>
       <button type="submit">Add Product</button>
       <!-- Go Back Button -->
-  <div style="text-align: center;">
-    <a href="{{ route('mechanic.productdashboard') }}" class="go-back-btn">Go Back</a>
-  </div>
+      <div style="text-align: center;">
+        <a href="{{ route('mechanic.productdashboard') }}" class="go-back-btn">Go Back</a>
+      </div>
     </form>
   </div>
+
+  <!-- JavaScript for image preview -->
+  <script>
+    document.getElementById('image').addEventListener('change', function(event) {
+      const [file] = this.files;
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const preview = document.getElementById('imagePreview');
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
 </body>
 </html>

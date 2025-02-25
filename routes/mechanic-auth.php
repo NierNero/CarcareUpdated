@@ -166,7 +166,9 @@ Route::middleware('auth:mechanic')->group(function () {
 
 Route::middleware('auth')->group(function () {
     // Payment page
+    Route::post('/payments', [PaymentController::class, 'index'])->name('payments.index');
     Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
+    Route::get('/payments/{productId}', [PaymentController::class, 'index'])->name('payments.buyNow');
 
     // Process payment
     Route::post('/payments/process', [PaymentController::class, 'process'])->name('payments.process');

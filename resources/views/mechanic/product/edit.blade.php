@@ -90,6 +90,7 @@
     }
     input[type="text"],
     input[type="number"],
+    input[type="file"],
     textarea {
       width: 100%;
       padding: 10px;
@@ -149,9 +150,11 @@
   @endif
 
   <div class="container">
-    <form action="{{ route('mechanic.update', $product->id) }}" method="POST">
+    <!-- Note: 'enctype' is needed for file uploads -->
+    <form action="{{ route('mechanic.update', $product->id) }}" method="POST" enctype="multipart/form-data">
       @csrf
       @method('PUT')
+      
       <div class="form-group">
         <label for="ProductName">Product Name:</label>
         <input type="text" id="ProductName" name="ProductName" value="{{ $product->ProductName }}" required>
@@ -168,11 +171,32 @@
         <label for="Inventory">Inventory:</label>
         <input type="number" id="Inventory" name="Inventory" value="{{ $product->Inventory }}" required>
       </div>
+      <div class="form-group">
+        <label for="color">Color:</label>
+        <input type="text" id="color" name="color" value="{{ $product->color }}" required>
+      </div>
+      <div class="form-group">
+        <label for="width">Width:</label>
+        <input type="text" id="width" name="width" value="{{ $product->width }}" required>
+      </div>
+      <div class="form-group">
+        <label for="weight">Weight:</label>
+        <input type="text" id="weight" name="weight" value="{{ $product->weight }}" required>
+      </div>
+      <div class="form-group">
+        <label for="height">Height:</label>
+        <input type="text" id="height" name="height" value="{{ $product->height }}" required>
+      </div>
+      <div class="form-group">
+        <label for="image">Product Image:</label>
+        <input type="file" id="image" name="image" accept="image/*">
+      </div>
+      
       <button type="submit">Update Product</button>
-        <!-- Go Back Button -->
-  <div style="text-align: center;">
-    <a href="{{ route('mechanic.productdashboard') }}" class="go-back-btn">Go Back</a>
-  </div>
+      <!-- Go Back Button -->
+      <div style="text-align: center;">
+        <a href="{{ route('mechanic.productdashboard') }}" class="go-back-btn">Go Back</a>
+      </div>
     </form>
   </div>
 </body>
